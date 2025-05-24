@@ -56,8 +56,8 @@ networks:
 ```
 
 📍 Accede a la consola en [http://localhost:15672](http://localhost:15672)  
-Usuario: `admin`  
-Contraseña: `admin`
+Usuario: `guest`  
+Contraseña: `guest`
 
 ---
 
