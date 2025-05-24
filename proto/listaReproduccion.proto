@@ -1,0 +1,48 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+
+package listas;
+
+service ListasReproduccionService {
+  rpc CrearLista (CrearListaRequest) returns (ListaResponse);
+  rpc AnadirVideo (ModificarVideoListaRequest) returns (ListaResponse);
+  rpc EliminarVideo (ModificarVideoListaRequest) returns (ListaResponse);
+  rpc ObtenerListas (TokenRequest) returns (ListasResponse);
+  rpc ObtenerVideosLista (ListaPorIdRequest) returns (VideosListaResponse);
+  rpc EliminarLista (ListaPorIdRequest) returns (google.protobuf.Empty);
+}
+
+message CrearListaRequest {
+  string nombre = 1;
+  string token = 2;
+}
+
+message ModificarVideoListaRequest {
+  string listaId = 1;
+  string videoId = 2;
+  string token = 3;
+}
+
+message TokenRequest {
+  string token = 1;
+}
+
+message ListaPorIdRequest {
+  string listaId = 1;
+  string token = 2;
+}
+
+message ListaResponse {
+  string id = 1;
+  string nombre = 2;
+  string usuarioId = 3;
+  string fechaCreacion = 4;
+}
+
+message ListasResponse {
+  repeated ListaResponse listas = 1;
+}
+
+message VideosListaResponse {
+  repeated string videoIds = 1;
+}

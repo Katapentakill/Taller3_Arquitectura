@@ -1,0 +1,47 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+
+package usuarios;
+
+service UsuariosService {
+  rpc CrearUsuario (CrearUsuarioRequest) returns (UsuarioResponse);
+  rpc ObtenerUsuarioPorId (ObtenerUsuarioRequest) returns (UsuarioResponse);
+  rpc ListarUsuarios (TokenRequest) returns (ListarUsuariosResponse);
+  rpc EliminarUsuario (EliminarUsuarioRequest) returns (google.protobuf.Empty);
+}
+
+message CrearUsuarioRequest {
+  string nombre = 1;
+  string apellido = 2;
+  string correo = 3;
+  string password = 4;
+  string confirmarPassword = 5;
+  string rol = 6;
+}
+
+message ObtenerUsuarioRequest {
+  string id = 1;
+  string token = 2;
+}
+
+message TokenRequest {
+  string token = 1;
+}
+
+message EliminarUsuarioRequest {
+  string id = 1;
+  string token = 2;
+}
+
+message UsuarioResponse {
+  string id = 1;
+  string nombre = 2;
+  string apellido = 3;
+  string correo = 4;
+  string rol = 5;
+  string fechaRegistro = 6;
+}
+
+message ListarUsuariosResponse {
+  repeated UsuarioResponse usuarios = 1;
+}
