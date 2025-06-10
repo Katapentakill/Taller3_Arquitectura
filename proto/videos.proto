@@ -1,0 +1,54 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+
+package videos;
+
+service VideosService {
+  rpc CrearVideo (CrearVideoRequest) returns (VideoResponse);
+  rpc ObtenerVideoPorId (VideoPorIdRequest) returns (VideoResponse);
+  rpc ListarVideos (Empty) returns (ListaVideosResponse);
+  rpc EliminarVideo (VideoPorIdRequest) returns (OperacionResponse);
+  rpc ActualizarVideo (ActualizarVideoRequest) returns (VideoResponse);
+  rpc BuscarVideosPorTitulo (BuscarPorTituloRequest) returns (ListaVideosResponse);
+}
+
+message CrearVideoRequest {
+  string title = 1;
+  string description = 2;
+  string genre = 3;
+}
+
+message ActualizarVideoRequest {
+  string title = 1;
+  string description = 2;
+  string genre = 3;
+
+}
+
+message VideoPorIdRequest {
+  string id = 1;
+}
+
+message BuscarPorTituloRequest {
+  string titulo = 1;
+}
+
+message VideoResponse {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  string genre = 4;
+  string status = 5;
+  string fechaCreacion = 6;
+}
+
+message ListaVideosResponse {
+  repeated VideoResponse videos = 1;
+}
+
+message OperacionResponse {
+  string mensaje = 1;
+  bool exito = 2;
+}
+
+message Empty {}
