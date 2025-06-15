@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package facturas;
+
+service FacturaService {
+  rpc CrearFactura (FacturaInput) returns (Factura);
+  rpc ObtenerFacturas (Empty) returns (ListaFacturas);
+  rpc ObtenerFacturaPorId (FacturaId) returns (Factura);
+  rpc ActualizarFactura (ActualizarFacturaRequest) returns (Factura);
+  rpc EliminarFactura (FacturaId) returns (Respuesta);
+}
+
+message Empty {}
+
+message FacturaId {
+  string id = 1;
+}
+
+message Producto {
+  string nombre = 1;
+  double precio = 2;
+  int32 cantidad = 3;
+}
+
+message FacturaInput {
+  string usuarioId = 1;
+  string fechaEmision = 2;
+  string metodoPago = 3;
+  double total = 4;
+  repeated Producto productos = 5;
+}
+
+message ActualizarFacturaRequest {
+  string id = 1;
+  FacturaInput update = 2;
+}
+
+message Factura {
+  string id = 1;
+  string usuarioId = 2;
+  string fechaEmision = 3;
+  string metodoPago = 4;
+  double total = 5;
+  repeated Producto productos = 6;
+}
+
+message ListaFacturas {
+  repeated Factura facturas = 1;
+}
+
+message Respuesta {
+  string message = 1;
+}
