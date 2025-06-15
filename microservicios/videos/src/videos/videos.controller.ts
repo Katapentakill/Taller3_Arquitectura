@@ -2,27 +2,37 @@ import { Controller } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import { VideosService } from './videos.service';
 
-@Controller('videos')
+@Controller()
 export class VideosController {
-    constructor(private readonly videosService: VideosService) {}
+  constructor(private readonly videosService: VideosService) {}
 
-    @GrpcMethod('VideosService', 'crearVideo')
-    async crearVideo(data: any): Promise<any> {
-        return this.videosService.crearVideo(data);
-    }
+  @GrpcMethod('VideosService', 'CrearVideo')
+  crearVideo(data: { title: string; description: string; genre: string; token: string }) {
+    return this.videosService.crearVideo(data);
+  }
 
-    @GrpcMethod('VideosService', 'obtenerVideoPorId')
-    async obtenerVideo(id: string): Promise<any> {
-        return this.videosService.obtenerVideo(id);
-    }
+  @GrpcMethod('VideosService', 'ObtenerVideoPorId')
+  obtenerVideoPorId(data: { id: string; token: string }) {
+    return this.videosService.obtenerVideoPorId(data.id, data.token);
+  }
 
-    @GrpcMethod('VideosService', 'actualizarVideo')
-    async actualizarVideo(data: { id: string; video: any }): Promise<any> {
-        return this.videosService.actualizarVideo(data.id, data.video);
-    }
+  @GrpcMethod('VideosService', 'ListarVideos')
+  listarVideos(data: { token: string }) {
+    return this.videosService.listarVideos(data.token);
+  }
 
-    @GrpcMethod('VideosService', 'eliminarVideo')
-    async eliminarVideo(id: string): Promise<any> {
-        return this.videosService.eliminarVideo(id);
-    }
+  @GrpcMethod('VideosService', 'EliminarVideo')
+  eliminarVideo(data: { id: string; token: string }) {
+    return this.videosService.eliminarVideo(data.id, data.token);
+  }
+
+  @GrpcMethod('VideosService', 'ActualizarVideo')
+  actualizarVideo(data: { id: string; title: string; description: string; genre: string; token: string }) {
+    return this.videosService.actualizarVideo(data);
+  }
+
+  @GrpcMethod('VideosService', 'BuscarVideosPorTitulo')
+  buscarVideosPorTitulo(data: { titulo: string; token: string }) {
+    return this.videosService.buscarPorTitulo(data.titulo, data.token);
+  }
 }

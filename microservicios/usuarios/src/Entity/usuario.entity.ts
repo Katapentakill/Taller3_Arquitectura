@@ -17,8 +17,9 @@ export class Usuario {
   @Column()
   rol: string;
 
-  @Column()
+  @Column({ default: false })
   softDelete: boolean;
+
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   fechaRegistro: Date;

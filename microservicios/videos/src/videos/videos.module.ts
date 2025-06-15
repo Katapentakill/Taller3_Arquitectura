@@ -14,13 +14,13 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         transport: Transport.RMQ,
         options: {
           urls: ['amqp://localhost:5672'],
-          queue: 'videos_queue',
+          queue: 'auth_queue',
           queueOptions: { durable: true },
         },
       },
     ]),
   ],
   controllers: [VideosController],
-  providers: [VideosService]
+  providers: [VideosService],
 })
 export class VideosModule {}

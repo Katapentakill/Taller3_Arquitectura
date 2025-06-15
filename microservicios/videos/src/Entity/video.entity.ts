@@ -1,21 +1,20 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
 
-/**
- * Esquema de la colección Videos en MongoDB.
- */
+export type VideoDocument = HydratedDocument<Video>;
+
 @Schema({ timestamps: true })
-export class Video extends Document {
+export class Video {
   @Prop({ required: true })
   title: string;
 
-  @Prop({ type: String, default: '' })
+  @Prop({ default: '' })
   description: string;
 
   @Prop({ required: true })
   genre: string;
 
-  @Prop({ type: Boolean, default: true })
+  @Prop({ default: true })
   status: boolean;
 }
 

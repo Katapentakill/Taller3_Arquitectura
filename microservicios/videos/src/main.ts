@@ -9,11 +9,11 @@ async function bootstrap() {
     options: {
       package: 'videos',
       protoPath: join(__dirname, '../../../proto/videos.proto'),
-      url: '0.0.0.0:50055', 
+      url: '0.0.0.0:50055',
     },
   });
 
-  const rmApp = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
+  const rmqApp = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
     transport: Transport.RMQ,
     options: {
       urls: ['amqp://localhost:5672'],
@@ -23,7 +23,8 @@ async function bootstrap() {
   });
 
   await grpcApp.listen();
-  await rmApp.listen();
-  console.log('Microservices está funcionando (gRPC + RabbitMQ)');
+  await rmqApp.listen();
+  console.log('Videos microservice is running (gRPC + RabbitMQ)...');
 }
+
 bootstrap();
