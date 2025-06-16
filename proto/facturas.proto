@@ -17,7 +17,7 @@ message CrearFacturaRequest {
   string estado = 3;
   string metodoPago = 4;
   int32 total = 5;
-  repeated Producto productos = 6;
+  repeated VideoComprado videosComprados = 6;
 }
 
 message ActualizarFacturaRequest {
@@ -36,10 +36,10 @@ message ListarFacturasRequest {
   string estado = 2;
 }
 
-message Producto {
-  string nombre = 1;
-  int32 precio = 2;
-  int32 cantidad = 3;
+message VideoComprado {
+  string videoId = 1;
+  string titulo = 2;
+  int32 precio = 3;
 }
 
 message FacturaResponse {
@@ -48,7 +48,7 @@ message FacturaResponse {
   string estado = 3;
   string metodoPago = 4;
   int32 total = 5;
-  repeated Producto productos = 6;
+  repeated VideoComprado videosComprados = 6;
   string fechaEmision = 7;
   string fechaPago = 8;
 }

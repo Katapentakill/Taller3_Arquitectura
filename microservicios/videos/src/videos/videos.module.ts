@@ -19,7 +19,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       },
     },
     {
-      name: 'USUARIOS_SERVICE',
+      name: 'RABBITMQ_SERVICE',
       transport: Transport.RMQ,
       options: {
         urls: ['amqp://localhost:5672'],
