@@ -3,6 +3,7 @@ import {
   UnauthorizedException,
   NotFoundException,
   Inject,
+  ForbiddenException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -15,9 +16,20 @@ import { faker } from '@faker-js/faker';
 export class VideosService {
   constructor(
     @InjectModel(Video.name) private readonly videoModel: Model<VideoDocument>,
-    @Inject('AUTH_SERVICE') private readonly authClient: ClientProxy,
-    @Inject('USUARIOS_SERVICE') private readonly usuariosClient: ClientProxy,
+    @Inject('RABBITMQ_SERVICE') private readonly rabbitMQClient: ClientProxy,
   ) {}
+
+  async verificarToken(token: string) {
+    if (!token) throw new UnauthorizedException('Token requerido');
+
+    const payload = await lastValueFrom(
+      this.rabbitMQClient.send('verificar.token.y.rol', { token }),
+    ).catch(() => {
+      throw new UnauthorizedException('Token inválido');
+    });
+
+    return payload; // { id, rol }
+  }
 
   async obtenerVideosParaFacturas() {
     const videos = await this.videoModel.find({ status: true }).lean();
@@ -26,18 +38,6 @@ export class VideosService {
       titulo: video.title,
       precio: video.price,
     }));
-  }
-
-  private async verificarTokenYRol(token: string): Promise<{ id: string; rol: string }> {
-    const payload = await lastValueFrom(
-      this.authClient.send('verificar.token', { token })
-    ).catch(() => { throw new UnauthorizedException('Token inválido'); });
-
-    const usuario = await lastValueFrom(
-      this.usuariosClient.send('obtener.usuario', { id: payload.sub, token })
-    ).catch(() => { throw new UnauthorizedException('Usuario no válido o sin permisos'); });
-
-    return usuario;
   }
 
   async seedVideos() {
@@ -60,8 +60,10 @@ export class VideosService {
   }
 
   async crearVideo(data: { title: string; description: string; genre: string; token: string }) {
-    const usuario = await this.verificarTokenYRol(data.token);
-    if (usuario.rol !== 'ADMIN') throw new UnauthorizedException('Solo administradores pueden crear videos');
+    const usuario = await this.verificarToken(data.token);
+    if (usuario.rol !== 'Administrador') {
+      throw new ForbiddenException('Solo administradores pueden crear videos');
+    }
 
     const video = await this.videoModel.create({
       title: data.title,
@@ -90,7 +92,7 @@ export class VideosService {
   }
 
   async obtenerVideoPorId(id: string, token: string) {
-    await this.verificarTokenYRol(token);
+    await this.verificarToken(token);
 
     const video = await this.videoModel.findOne({ _id: id, status: true }).lean();
     if (!video) throw new NotFoundException('Video no encontrado');
@@ -105,7 +107,7 @@ export class VideosService {
   }
 
   async listarVideos(token: string) {
-    await this.verificarTokenYRol(token);
+    await this.verificarToken(token);
 
     const videos = await this.videoModel.find({ status: true }).lean();
 
@@ -121,8 +123,10 @@ export class VideosService {
   }
 
   async eliminarVideo(id: string, token: string) {
-    const usuario = await this.verificarTokenYRol(token);
-    if (usuario.rol !== 'ADMIN') throw new UnauthorizedException('Solo administradores pueden eliminar videos');
+    const usuario = await this.verificarToken(token);
+    if (usuario.rol !== 'Administrador') {
+      throw new ForbiddenException('Solo administradores pueden eliminar videos');
+    }
 
     const video = await this.videoModel.findById(id);
     if (!video || !video.status) throw new NotFoundException('Video no encontrado');
@@ -134,8 +138,10 @@ export class VideosService {
   }
 
   async actualizarVideo(data: { id: string; title?: string; description?: string; genre?: string; token: string }) {
-    const usuario = await this.verificarTokenYRol(data.token);
-    if (usuario.rol !== 'ADMIN') throw new UnauthorizedException('Solo administradores pueden actualizar videos');
+    const usuario = await this.verificarToken(data.token);
+    if (usuario.rol !== 'Administrador') {
+      throw new ForbiddenException('Solo administradores pueden actualizar videos');
+    }
 
     const video = await this.videoModel.findOne({ _id: data.id, status: true });
     if (!video) throw new NotFoundException('Video no encontrado');
@@ -156,7 +162,7 @@ export class VideosService {
   }
 
   async buscarPorTitulo(titulo: string, token: string) {
-    await this.verificarTokenYRol(token);
+    await this.verificarToken(token);
 
     const regex = new RegExp(titulo, 'i');
     const videos = await this.videoModel.find({ title: { $regex: regex }, status: true }).lean();
