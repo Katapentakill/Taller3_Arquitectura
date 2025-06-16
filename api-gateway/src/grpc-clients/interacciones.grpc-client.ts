@@ -6,6 +6,6 @@ export const interaccionesClientOptions: ClientOptions = {
   options: {
     package: 'interacciones',
     protoPath: join(__dirname, '../../../proto/interacciones.proto'),
-    url: 'localhost:50056',
+    url: 'localhost:50059',
   },
 };

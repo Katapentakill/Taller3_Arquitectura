@@ -1,6 +1,7 @@
-import { Controller, Post, Body, Inject, Get, Param, Req, UnauthorizedException, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Inject, Get, Param, Req, UnauthorizedException, Delete, Patch } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
+import { Request } from 'express';
 
 interface CrearUsuarioRequest {
   nombre: string;
@@ -11,16 +12,13 @@ interface CrearUsuarioRequest {
   rol: string;
 }
 
-interface ObtenerUsuarioRequest {
-  id: string;
-  token: string;
-}
-
 interface UsuariosService {
+  seedUsuarios(data: {}): any;
   crearUsuario(data: Partial<CrearUsuarioRequest>): any;
-  obtenerUsuarioPorId(data: ObtenerUsuarioRequest): any;
+  obtenerUsuarioPorId(data: { id: string; token: string }): any;
   listarUsuarios(data: { token: string }): any;
   eliminarUsuario(data: { id: string; token: string }): any;
+  actualizarUsuario(data: { id: string; token: string; nombre: string; apellido: string; correo: string }): any;
 }
 
 @Controller('usuarios')
@@ -33,9 +31,24 @@ export class UsuariosController {
     this.usuariosService = this.usuariosClient.getService<UsuariosService>('UsuariosService');
   }
 
+
+  @Post('seed')
+  async seedUsuarios() {
+    return firstValueFrom(this.usuariosService.seedUsuarios({}));
+  }
+
+
   @Post()
-  async crearUsuario(@Body() data: CrearUsuarioRequest) {
-    console.log('[Gateway] → POST /usuarios');
+  async crearUsuario(@Body() data: CrearUsuarioRequest, @Req() req: Request) {
+    const authHeader = req.headers['authorization'];
+    let token: string | undefined = undefined;
+    if (data.rol === 'Administrador') {
+      if (!authHeader) {
+        throw new UnauthorizedException('Token requerido para crear administradores');
+      }
+      token = authHeader.split(' ')[1];
+    }
+
     const usuarioCompleto = {
       nombre: data.nombre,
       apellido: data.apellido,
@@ -43,25 +56,21 @@ export class UsuariosController {
       password: data.password,
       confirmarPassword: data.confirmarPassword,
       rol: data.rol,
+      token,
     };
 
     try {
-      const usuarioCreado = await firstValueFrom(
-        this.usuariosService.crearUsuario(usuarioCompleto),
-      );
-      return usuarioCreado;
+      return await firstValueFrom(this.usuariosService.crearUsuario(usuarioCompleto));
     } catch (error) {
-      console.error('[Gateway] ❌ Error al crear usuario:', error);
       throw error;
     }
   }
 
+
   @Get(':id')
   async obtenerUsuarioPorId(@Param('id') id: string, @Req() req: Request) {
     const authHeader = req.headers['authorization'];
-    if (!authHeader) {
-      throw new UnauthorizedException('Token no proporcionado');
-    }
+    if (!authHeader) throw new UnauthorizedException('Token no proporcionado');
 
     const token = authHeader.split(' ')[1];
 
@@ -71,7 +80,6 @@ export class UsuariosController {
       );
       return usuario;
     } catch (error) {
-      console.error('[Gateway] ❌ Error al obtener usuario:', error);
       throw error;
     }
   }
@@ -94,4 +102,26 @@ export class UsuariosController {
     return firstValueFrom(this.usuariosService.eliminarUsuario({ id, token }));
   }
 
+  @Patch(':id')
+  async actualizarUsuario(@Param('id') id: string, @Body() body: any, @Req() req: Request) {
+    const authHeader = req.headers['authorization'];
+    if (!authHeader) throw new UnauthorizedException('Token no proporcionado');
+
+    const token = authHeader.split(' ')[1];
+
+    const data = {
+      id,
+      token,
+      nombre: body.nombre,
+      apellido: body.apellido,
+      correo: body.correo,
+    };
+
+    try {
+      const usuario = await firstValueFrom(this.usuariosService.actualizarUsuario(data));
+      return usuario;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

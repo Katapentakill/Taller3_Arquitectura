@@ -9,16 +9,25 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
   imports: [
     MongooseModule.forFeature([{ name: Video.name, schema: VideoSchema }]),
     ClientsModule.register([
-      {
-        name: 'RABBITMQ_SERVICE',
-        transport: Transport.RMQ,
-        options: {
-          urls: ['amqp://localhost:5672'],
-          queue: 'auth_queue',
-          queueOptions: { durable: true },
-        },
+    {
+      name: 'AUTH_SERVICE',
+      transport: Transport.RMQ,
+      options: {
+        urls: ['amqp://localhost:5672'],
+        queue: 'auth_queue',
+        queueOptions: { durable: true },
       },
-    ]),
+    },
+    {
+      name: 'RABBITMQ_SERVICE',
+      transport: Transport.RMQ,
+      options: {
+        urls: ['amqp://localhost:5672'],
+        queue: 'usuarios_queue',
+        queueOptions: { durable: true },
+      },
+    },
+  ]),
   ],
   controllers: [VideosController],
   providers: [VideosService],

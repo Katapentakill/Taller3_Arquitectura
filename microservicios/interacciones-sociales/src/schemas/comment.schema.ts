@@ -1,18 +1,19 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type ComentarioDocument = Comentario & Document;
-
 @Schema({ timestamps: true })
-export class Comentario {
+export class Comment extends Document {
   @Prop({ required: true })
   videoId: string;
 
   @Prop({ required: true })
-  usuarioId: string;
+  userId: string;
 
   @Prop({ required: true })
-  texto: string;
+  userEmail: string;
+
+  @Prop({ required: true })
+  content: string;
 }
 
-export const ComentarioSchema = SchemaFactory.createForClass(Comentario);
+export const CommentSchema = SchemaFactory.createForClass(Comment);

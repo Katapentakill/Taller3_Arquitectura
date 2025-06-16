@@ -1,11 +1,19 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const grpcApp = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
+    transport: Transport.GRPC,
+    options: {
+      package: 'monitoreo',
+      protoPath: join(__dirname, '../../../proto/monitoreo.proto'),
+      url: '0.0.0.0:50058',
+    },
+  });
 
-  app.connectMicroservice<MicroserviceOptions>({
+  const rmqApp = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
     transport: Transport.RMQ,
     options: {
       urls: ['amqp://localhost:5672'],
@@ -14,9 +22,9 @@ async function bootstrap() {
     },
   });
 
-  await app.startAllMicroservices();
-  await app.listen(3000);
-  console.log('Microservicio de Monitoreo corriendo en puerto 3000 y escuchando eventos RabbitMQ');
-}
+  await grpcApp.listen();
+  await rmqApp.listen();
 
+  console.log('✅ Microservicio de Monitoreo corriendo...');
+}
 bootstrap();

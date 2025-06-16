@@ -1,21 +1,25 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FacturaModule } from './factura/factura.module';
-import { ConfigModule } from '@nestjs/config';
-import { join } from 'path';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Factura } from './entity/factura.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DB_FACTURAS_HOST as string,
-      port: parseInt(process.env.DB_FACTURAS_PORT as string),
-      username: process.env.DB_FACTURAS_USERNAME as string,
-      password: process.env.DB_FACTURAS_PASSWORD as string,
-      database: process.env.DB_FACTURAS_NAME as string,
-      entities: [join(__dirname, '/**/*.entity{.ts,.js}')],
-      synchronize: true,
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        type: 'mariadb',
+        host: config.get('DB_USERS_HOST'),
+        port: config.get<number>('DB_USERS_PORT'),
+        username: config.get('DB_USERS_USERNAME'),
+        password: config.get('DB_USERS_PASSWORD'),
+        database: config.get('DB_FACTURAS_NAME'),
+        entities: [Factura],
+        synchronize: true,
+      }),
     }),
     FacturaModule,
   ],

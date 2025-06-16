@@ -14,6 +14,9 @@ export class Video {
   @Prop({ required: true })
   genre: string;
 
+  @Prop({ required: true })
+  price: number;
+
   @Prop({ default: true })
   status: boolean;
 }

@@ -10,12 +10,29 @@ export class ListasController {
   crearLista(data: { nombre: string; token: string }) {
     return this.listasService.crearLista(data.nombre, data.token);
   }
+
   @GrpcMethod('ListasReproduccionService', 'EliminarLista')
   eliminarLista(data: { listaId: string; token: string }) {
     return this.listasService.eliminarLista(data.listaId, data.token);
   }
+
   @GrpcMethod('ListasReproduccionService', 'ObtenerListas')
   obtenerListas(data: { token: string }) {
     return this.listasService.obtenerListas(data.token);
+  }
+
+  @GrpcMethod('ListasReproduccionService', 'AnadirVideo')
+  anadirVideo(data: { listaId: string; videoId: string; token: string }) {
+    return this.listasService.anadirVideo(data.listaId, data.videoId, data.token);
+  }
+
+  @GrpcMethod('ListasReproduccionService', 'EliminarVideo')
+  eliminarVideo(data: { listaId: string; videoId: string; token: string }) {
+    return this.listasService.eliminarVideo(data.listaId, data.videoId, data.token);
+  }
+
+  @GrpcMethod('ListasReproduccionService', 'ObtenerVideosLista')
+  obtenerVideosLista(data: { listaId: string; token: string }) {
+    return this.listasService.obtenerVideosLista(data.listaId, data.token);
   }
 }

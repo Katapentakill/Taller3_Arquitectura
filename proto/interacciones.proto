@@ -2,46 +2,43 @@ syntax = "proto3";
 
 package interacciones;
 
-service InteraccionService {
-  rpc CrearComentario (ComentarioRequest) returns (ComentarioResponse);
-  rpc ObtenerComentarios (VideoRequest) returns (ListaComentariosResponse);
-
+service InteraccionesService {
   rpc DarLike (LikeRequest) returns (MensajeResponse);
-  rpc QuitarLike (LikeRequest) returns (MensajeResponse);
-  rpc ContarLikes (VideoRequest) returns (LikesResponse);
-}
-
-message ComentarioRequest {
-  string videoId = 1;
-  string usuarioId = 2;
-  string texto = 3;
-}
-
-message ComentarioResponse {
-  string id = 1;
-  string videoId = 2;
-  string usuarioId = 3;
-  string texto = 4;
-  string createdAt = 5;
-}
-
-message VideoRequest {
-  string videoId = 1;
-}
-
-message ListaComentariosResponse {
-  repeated ComentarioResponse comentarios = 1;
+  rpc DejarComentario (ComentarioRequest) returns (MensajeResponse);
+  rpc ObtenerInteracciones (VideoRequest) returns (InteraccionesResponse);
+  rpc SeedInteracciones (Empty) returns (MensajeResponse);
 }
 
 message LikeRequest {
   string videoId = 1;
-  string usuarioId = 2;
+  string token = 2;
 }
 
-message LikesResponse {
-  int32 total = 1;
+message ComentarioRequest {
+  string videoId = 1;
+  string content = 2;
+  string token = 3;
+}
+
+message VideoRequest {
+  string videoId = 1;
+  string token = 2;
 }
 
 message MensajeResponse {
   string message = 1;
 }
+
+message Comentario {
+  string id = 1;
+  string usuarioId = 2;
+  string content = 3;
+  string createdAt = 4;
+}
+
+message InteraccionesResponse {
+  int32 likes = 1;
+  repeated Comentario comentarios = 2;
+}
+
+message Empty {}

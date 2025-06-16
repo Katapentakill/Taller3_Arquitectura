@@ -9,11 +9,11 @@ async function bootstrap() {
     options: {
       package: 'interacciones',
       protoPath: join(__dirname, '../../../proto/interacciones.proto'),
-      url: '0.0.0.0:50056',
+      url: '0.0.0.0:50059',
     },
   });
 
   await grpcApp.listen();
-  console.log('Microservicio de interacciones sociales corriendo (gRPC + MongoDB)');
+  console.log('💬 Microservicio de interacciones sociales corriendo (gRPC + MongoDB)');
 }
 bootstrap();

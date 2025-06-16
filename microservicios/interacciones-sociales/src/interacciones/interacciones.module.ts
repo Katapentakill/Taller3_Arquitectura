@@ -1,18 +1,39 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { InteraccionService } from './interacciones.service';
-import { InteraccionController } from './interacciones.controller';
-import { Comentario, ComentarioSchema } from '../schemas/comentario.schema';
+import { InteraccionesController } from './interacciones.controller';
+import { InteraccionesService } from './interacciones.service';
 import { Like, LikeSchema } from '../schemas/like.schema';
+import { Comment, CommentSchema } from '../schemas/comment.schema';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: Comentario.name, schema: ComentarioSchema },
       { name: Like.name, schema: LikeSchema },
+      { name: Comment.name, schema: CommentSchema },
+    ]),
+    ClientsModule.register([
+      {
+        name: 'RABBITMQ_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://localhost:5672'],
+          queue: 'usuarios_queue',
+          queueOptions: { durable: true },
+        },
+      },
+      {
+        name: 'VIDEOS_RMQ',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://localhost:5672'],
+          queue: 'videos_queue',
+          queueOptions: { durable: true },
+        },
+      },
     ]),
   ],
-  controllers: [InteraccionController],
-  providers: [InteraccionService],
+  controllers: [InteraccionesController],
+  providers: [InteraccionesService],
 })
-export class InteraccionModule {}
+export class InteraccionesModule {}
