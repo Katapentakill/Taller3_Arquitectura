@@ -1,6 +1,20 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, Inject } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Patch,
+  Delete,
+  Body,
+  Param,
+  Query,
+  Inject,
+  Req,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
+import { Request } from 'express';
 import { firstValueFrom } from 'rxjs';
+
 
 interface Producto {
   nombre: string;
@@ -8,54 +22,67 @@ interface Producto {
   cantidad: number;
 }
 
-interface FacturaInput {
-  usuarioId: string;
-  fechaEmision: string;
-  metodoPago: string;
-  total: number;
-  productos: Producto[];
-}
-
 interface FacturaService {
-  CrearFactura(data: FacturaInput): any;
-  ObtenerFacturas(data: {}): any;
-  ObtenerFacturaPorId(data: { id: string }): any;
-  ActualizarFactura(data: { id: string; update: FacturaInput }): any;
-  EliminarFactura(data: { id: string }): any;
+  CrearFactura(data: any): any;
+  ObtenerFacturaPorId(data: any): any;
+  ActualizarFactura(data: any): any;
+  EliminarFactura(data: any): any;
+  ListarFacturas(data: any): any;
+  SeedFacturas(data: any): any;
 }
 
 @Controller('facturas')
-export class FacturaController {
+export class FacturasController {
   private facturaService: FacturaService;
 
-  constructor(@Inject('FACTURA_PACKAGE') private client: ClientGrpc) {}
+  constructor(@Inject('FACTURAS_PACKAGE') private client: ClientGrpc) {}
 
   onModuleInit() {
-    this.facturaService = this.client.getService<FacturaService>('FacturaService');
+    this.facturaService = this.client.getService<FacturaService>('FacturasService');
   }
 
   @Post()
-  async crear(@Body() data: FacturaInput) {
+  async crear(@Req() req: Request, @Body() body: any) {
+    const token = this.obtenerToken(req);
+    const data = { ...body, token };
     return await firstValueFrom(this.facturaService.CrearFactura(data));
   }
 
-  @Get()
-  async obtenerTodas() {
-    return await firstValueFrom(this.facturaService.ObtenerFacturas({}));
+  @Post('seed')
+  async seedFacturas() {
+    return await firstValueFrom(this.facturaService.SeedFacturas({}));
   }
 
+
   @Get(':id')
-  async obtenerPorId(@Param('id') id: string) {
-    return await firstValueFrom(this.facturaService.ObtenerFacturaPorId({ id }));
+  async obtenerPorId(@Param('id') id: string, @Req() req: Request) {
+    const token = this.obtenerToken(req);
+    return await firstValueFrom(this.facturaService.ObtenerFacturaPorId({ id, token }));
   }
 
   @Patch(':id')
-  async actualizar(@Param('id') id: string, @Body() update: FacturaInput) {
-    return await firstValueFrom(this.facturaService.ActualizarFactura({ id, update }));
+  async actualizar(@Param('id') id: string, @Body() body: any, @Req() req: Request) {
+    const token = this.obtenerToken(req);
+    return await firstValueFrom(
+      this.facturaService.ActualizarFactura({ id, estado: body.estado, token }),
+    );
   }
 
   @Delete(':id')
-  async eliminar(@Param('id') id: string) {
-    return await firstValueFrom(this.facturaService.EliminarFactura({ id }));
+  async eliminar(@Param('id') id: string, @Req() req: Request) {
+    const token = this.obtenerToken(req);
+    return await firstValueFrom(this.facturaService.EliminarFactura({ id, token }));
+  }
+
+  @Get()
+  async listar(@Req() req: Request, @Query('estado') estado?: string) {
+    const token = this.obtenerToken(req);
+    return await firstValueFrom(this.facturaService.ListarFacturas({ token, estado }));
+  }
+
+  private obtenerToken(req: Request): string {
+    const auth = req.headers['authorization'];
+    if (!auth) throw new UnauthorizedException('Token no proporcionado');
+    return auth.split(' ')[1];
   }
 }

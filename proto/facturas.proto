@@ -2,52 +2,63 @@ syntax = "proto3";
 
 package facturas;
 
-service FacturaService {
-  rpc CrearFactura (FacturaInput) returns (Factura);
-  rpc ObtenerFacturas (Empty) returns (ListaFacturas);
-  rpc ObtenerFacturaPorId (FacturaId) returns (Factura);
-  rpc ActualizarFactura (ActualizarFacturaRequest) returns (Factura);
-  rpc EliminarFactura (FacturaId) returns (Respuesta);
+service FacturasService {
+  rpc SeedFacturas (Empty) returns (Mensaje);
+  rpc CrearFactura (CrearFacturaRequest) returns (FacturaResponse);
+  rpc ObtenerFacturaPorId (FacturaPorIdRequest) returns (FacturaResponse);
+  rpc ActualizarFactura (ActualizarFacturaRequest) returns (FacturaResponse);
+  rpc EliminarFactura (FacturaPorIdRequest) returns (Mensaje);
+  rpc ListarFacturas (ListarFacturasRequest) returns (FacturasListResponse);
 }
 
-message Empty {}
+message CrearFacturaRequest {
+  string token = 1;
+  string usuarioId = 2;
+  string estado = 3;
+  string metodoPago = 4;
+  int32 total = 5;
+  repeated Producto productos = 6;
+}
 
-message FacturaId {
-  string id = 1;
+message ActualizarFacturaRequest {
+  string token = 1;
+  string id = 2;
+  string estado = 3;
+}
+
+message FacturaPorIdRequest {
+  string token = 1;
+  string id = 2;
+}
+
+message ListarFacturasRequest {
+  string token = 1;
+  string estado = 2;
 }
 
 message Producto {
   string nombre = 1;
-  double precio = 2;
+  int32 precio = 2;
   int32 cantidad = 3;
 }
 
-message FacturaInput {
-  string usuarioId = 1;
-  string fechaEmision = 2;
-  string metodoPago = 3;
-  double total = 4;
-  repeated Producto productos = 5;
-}
-
-message ActualizarFacturaRequest {
-  string id = 1;
-  FacturaInput update = 2;
-}
-
-message Factura {
+message FacturaResponse {
   string id = 1;
   string usuarioId = 2;
-  string fechaEmision = 3;
+  string estado = 3;
   string metodoPago = 4;
-  double total = 5;
+  int32 total = 5;
   repeated Producto productos = 6;
+  string fechaEmision = 7;
+  string fechaPago = 8;
 }
 
-message ListaFacturas {
-  repeated Factura facturas = 1;
+message FacturasListResponse {
+  repeated FacturaResponse facturas = 1;
 }
 
-message Respuesta {
+message Mensaje {
   string message = 1;
 }
+
+message Empty {}

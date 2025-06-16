@@ -9,7 +9,7 @@ async function bootstrap() {
     options: {
       package: 'facturas',
       protoPath: join(__dirname, '../../../proto/facturas.proto'),
-      url: '0.0.0.0:50054',
+      url: '0.0.0.0:50056', // ✅ Cambiado a 50056
     },
   });
 
@@ -26,6 +26,6 @@ async function bootstrap() {
 
   await grpcApp.listen();
   await rabbitApp.listen();
-  console.log('Microservicio de facturas corriendo con gRPC y RabbitMQ');
+  console.log('📄 Microservicio de facturas corriendo con gRPC y RabbitMQ');
 }
 bootstrap();

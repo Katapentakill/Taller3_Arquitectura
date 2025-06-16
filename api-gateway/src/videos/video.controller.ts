@@ -46,6 +46,7 @@ interface VideosService {
   eliminarVideo(data: { id: string; token: string }): any;
   actualizarVideo(data: { id: string } & ActualizarVideoRequest & { token: string }): any;
   buscarVideosPorTitulo(data: BuscarPorTituloRequest): any;
+  seedVideos(data: {}): any;
 }
 
 @Controller('videos')
@@ -57,6 +58,13 @@ export class VideoController {
   onModuleInit() {
     this.videoService = this.videoClient.getService<VideosService>('VideosService');
   }
+  
+  @Post('seed')
+  async seedVideos() {
+    console.log('[Gateway] → POST /videos/seed');
+    return await firstValueFrom(this.videoService.seedVideos({}));
+  }
+
 
   @Post()
   async crearVideo(@Body() data: CrearVideoRequest, @Req() req: Request) {

@@ -3,6 +3,7 @@ syntax = "proto3";
 package videos;
 
 service VideosService {
+rpc SeedVideos (Empty) returns (OperacionResponse);
 rpc CrearVideo (CrearVideoRequest) returns (VideoResponse);
 rpc ObtenerVideoPorId (VideoPorIdRequest) returns (VideoResponse);
 rpc ListarVideos (TokenRequest) returns (ListaVideosResponse);
@@ -57,3 +58,5 @@ message OperacionResponse {
 string mensaje = 1;
 bool exito = 2;
 }
+
+message Empty {}

@@ -1,13 +1,19 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule } from '@nestjs/config';
-import { InteraccionModule } from './interacciones/interacciones.module';
+import { InteraccionesModule } from './interacciones/interacciones.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    MongooseModule.forRoot(process.env.MONGO_URI || ''),
-    InteraccionModule,
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (config: ConfigService) => ({
+        uri: config.get<string>('MONGO_INTERACCIONES_URI'),
+      }),
+      inject: [ConfigService],
+    }),
+    InteraccionesModule,
   ],
 })
 export class AppModule {}

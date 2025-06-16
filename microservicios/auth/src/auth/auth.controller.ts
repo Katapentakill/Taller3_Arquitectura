@@ -1,6 +1,15 @@
-import { Controller, UnauthorizedException } from '@nestjs/common';
-import { EventPattern, Payload, Ctx, RmqContext, GrpcMethod, MessagePattern } from '@nestjs/microservices';
+import {
+  Body,
+  Controller,
+  Post,
+  Patch,
+  Param,
+  Req,
+  UnauthorizedException,
+  HttpCode,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller()
 export class AuthController {
@@ -9,9 +18,7 @@ export class AuthController {
   @EventPattern('usuario.registro')
   async handleUsuarioRegistro(@Payload() data: any) {
     try {
-      console.log('[Auth] ← Evento usuario.registro recibido:', data);
       await this.authService.registrarUsuario(data.correo, data.password);
-      console.log('[Auth] → Usuario creado en Auth DB');
     } catch (err) {
       console.error('[Auth] ❌ Error al registrar usuario:', err);
     }
@@ -19,48 +26,43 @@ export class AuthController {
 
   @MessagePattern('verificar.token')
   async handleVerificarToken(@Payload() data: { token: string }) {
-    const payload = await this.authService.verificarToken(data.token);
-    return payload;
+    return this.authService.verificarToken(data.token);
   }
 
-
-  @GrpcMethod('AuthService', 'Login')
-  async loginGrpc(data: { correo: string; password: string }) {
-    console.log('[Auth] ← gRPC Login recibido');
-    const token = await this.authService.login(data.correo, data.password);
-    return { token: token };
+  @Post('auth/login')
+  @HttpCode(200)
+  async login(@Body() data: { correo: string; password: string }) {
+    return this.authService.login(data.correo, data.password);
   }
 
-  @GrpcMethod('AuthService', 'Logout')
-  async logoutGrpc(data: { token: string }) {
-    return this.authService.logout(data.token);
+  @Post('auth/logout')
+  @HttpCode(200)
+  async logout(@Req() req: Request) {
+    const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) throw new UnauthorizedException('Token requerido');
+    return this.authService.logout(token);
   }
 
-  @GrpcMethod('AuthService', 'ActualizarPassword')
-  async actualizarPasswordUsuarioGrpc(data: {
-    id: string;
-    passwordActual: string;
-    nuevaPassword: string;
-    confirmarPassword: string;
-    token: string;
-  }) {
-    try {
-      const payload = await this.authService.verificarToken(data.token);
-      if (String(payload.sub) !== String(data.id)) {
-        throw new UnauthorizedException('No autorizado para cambiar esta contraseña');
-      }
+  @Patch('auth/usuarios/:id')
+  async actualizarPassword(
+    @Param('id') id: string,
+    @Body() body,
+    @Req() req: Request,
+  ) {
+    const token = req.headers['authorization']?.split(' ')[1];
+    const payload = await this.authService.verificarToken(token);
 
-      await this.authService.actualizarPassword(
-        data.id,
-        data.passwordActual,
-        data.nuevaPassword,
-        data.confirmarPassword,
-      );
-
-      return { message: 'Contraseña actualizada correctamente' };
-    } catch (err) {
-      console.error('[Auth] ❌ Error en actualizarPassword:', err);
-      throw err;
+    if (String(payload.sub) !== String(id)) {
+      throw new UnauthorizedException('No autorizado para cambiar esta contraseña');
     }
+
+    await this.authService.actualizarPassword(
+      id,
+      body.passwordActual,
+      body.nuevaPassword,
+      body.confirmarPassword,
+    );
+
+    return { message: 'Contraseña actualizada correctamente' };
   }
 }

@@ -12,7 +12,7 @@ async function bootstrap() {
     },
   });
 
-  await app.listen();
-  console.log('📬 Microservicio de Correo esperando eventos...');
+  await app.listen(); // ✅ Sin argumentos
+  console.log('📬 Microservicio de Correo esperando eventos en RabbitMQ...');
 }
 bootstrap();

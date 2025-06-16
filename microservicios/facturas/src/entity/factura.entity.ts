@@ -1,4 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Factura {
@@ -8,15 +13,29 @@ export class Factura {
   @Column()
   usuarioId: string;
 
-  @Column()
-  fechaEmision: Date;
+  @Column({ default: 'Pendiente' })
+  estado: 'Pendiente' | 'Pagado' | 'Vencido';
 
   @Column()
-  metodoPago: string;
+  metodoPago: string; // 'Tarjeta', 'Transferencia', 'Efectivo', etc.
 
-  @Column('float')
+  @Column('int')
   total: number;
 
+  @CreateDateColumn()
+  fechaEmision: Date;
+
+  @Column({ type: 'timestamp', nullable: true })
+  fechaPago: Date | null;
+
+  // Recomendación: cambiar "productos" por "videosComprados"
   @Column('simple-json')
-  productos: { nombre: string; precio: number; cantidad: number }[];
+  videosComprados: {
+    videoId: string;
+    titulo: string;
+    precio: number;
+  }[];
+
+  @Column({ default: false })
+  eliminado: boolean;
 }

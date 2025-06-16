@@ -1,33 +1,39 @@
 import { Controller } from '@nestjs/common';
-import { FacturaService } from './factura.service';
 import { GrpcMethod } from '@nestjs/microservices';
+import { FacturaService } from './factura.service';
 
 @Controller()
 export class FacturaController {
   constructor(private readonly facturaService: FacturaService) {}
 
-  @GrpcMethod('FacturaService', 'CrearFactura')
+  @GrpcMethod('FacturasService', 'CrearFactura')
   crear(data: any) {
     return this.facturaService.crear(data);
   }
-
-  @GrpcMethod('FacturaService', 'ObtenerFacturas')
-  obtenerTodas() {
-    return this.facturaService.obtenerTodas();
+  
+  @GrpcMethod('FacturasService', 'SeedFacturas')
+  seedFacturas(_: any) {
+    return this.facturaService.seedFacturas();
   }
 
-  @GrpcMethod('FacturaService', 'ObtenerFacturaPorId')
-  obtenerPorId(data: { id: string }) {
-    return this.facturaService.obtenerPorId(data.id);
+
+  @GrpcMethod('FacturasService', 'ObtenerFacturaPorId')
+  obtenerPorId(data: { id: string; token: string }) {
+    return this.facturaService.obtenerPorId(data);
   }
 
-  @GrpcMethod('FacturaService', 'ActualizarFactura')
-  actualizar(data: { id: string; update: any }) {
-    return this.facturaService.actualizar(data.id, data.update);
+  @GrpcMethod('FacturasService', 'ActualizarFactura')
+  actualizar(data: { id: string; estado: string; token: string }) {
+    return this.facturaService.actualizar(data);
   }
 
-  @GrpcMethod('FacturaService', 'EliminarFactura')
-  eliminar(data: { id: string }) {
-    return this.facturaService.eliminar(data.id);
+  @GrpcMethod('FacturasService', 'EliminarFactura')
+  eliminar(data: { id: string; token: string }) {
+    return this.facturaService.eliminar(data);
+  }
+
+  @GrpcMethod('FacturasService', 'ListarFacturas')
+  obtenerTodas(data: { token: string; estado?: string }) {
+    return this.facturaService.obtenerTodas(data);
   }
 }

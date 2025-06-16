@@ -1,37 +1,29 @@
 import { Controller } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
-import { InteraccionService } from './interacciones.service';
+import { InteraccionesService } from './interacciones.service';
 
 @Controller()
-export class InteraccionController {
-  constructor(private readonly interaccionService: InteraccionService) {}
+export class InteraccionesController {
+  constructor(private readonly interaccionesService: InteraccionesService) {}
 
-  @GrpcMethod('InteraccionService', 'CrearComentario')
-  async crearComentario(data: { videoId: string; usuarioId: string; texto: string }) {
-    return this.interaccionService.crearComentario(data);
+  @GrpcMethod('InteraccionesService', 'DarLike')
+  darLike(data: { videoId: string; token: string }) {
+    return this.interaccionesService.darLike(data);
   }
 
-  @GrpcMethod('InteraccionService', 'ObtenerComentarios')
-  async obtenerComentarios(data: { videoId: string }) {
-    const comentarios = await this.interaccionService.obtenerComentarios(data.videoId);
-    return { comentarios };
+  @GrpcMethod('InteraccionesService', 'SeedInteracciones')
+  seedInteracciones(_: any) {
+    return this.interaccionesService.seedInteracciones();
   }
 
-  @GrpcMethod('InteraccionService', 'DarLike')
-  async darLike(data: { videoId: string; usuarioId: string }) {
-    await this.interaccionService.darLike(data.videoId, data.usuarioId);
-    return { message: 'Like registrado (si no existía previamente)' };
+
+  @GrpcMethod('InteraccionesService', 'DejarComentario')
+  dejarComentario(data: { videoId: string; content: string; token: string }) {
+    return this.interaccionesService.dejarComentario(data);
   }
 
-  @GrpcMethod('InteraccionService', 'QuitarLike')
-  async quitarLike(data: { videoId: string; usuarioId: string }) {
-    await this.interaccionService.quitarLike(data.videoId, data.usuarioId);
-    return { message: 'Like eliminado (si existía)' };
-  }
-
-  @GrpcMethod('InteraccionService', 'ContarLikes')
-  async contarLikes(data: { videoId: string }) {
-    const total = await this.interaccionService.contarLikes(data.videoId);
-    return { total };
+  @GrpcMethod('InteraccionesService', 'ObtenerInteracciones')
+  obtenerInteracciones(data: { videoId: string; token: string }) {
+    return this.interaccionesService.obtenerInteracciones(data.videoId, data.token);
   }
 }

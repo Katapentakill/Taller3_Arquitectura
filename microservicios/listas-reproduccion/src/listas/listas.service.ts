@@ -20,21 +20,31 @@ export class ListasService {
     @InjectRepository(ListaVideo)
     private readonly listaVideoRepo: Repository<ListaVideo>,
 
-    @Inject('AUTH_SERVICE')
-    private readonly authClient: ClientProxy,
+    @Inject('AUTH_SERVICE') private readonly authClient: ClientProxy,
+    @Inject('VIDEOS_RMQ') private readonly videosClient: ClientProxy,
+    @Inject('USUARIOS_SERVICE') private readonly usuariosClient: ClientProxy,
   ) {}
+
+  private async verificarTokenYRol(token: string): Promise<{ id: string; rol: string }> {
+    const payload = await lastValueFrom(
+      this.authClient.send('verificar.token', { token }),
+    ).catch(() => {
+      throw new UnauthorizedException('Token inválido');
+    });
+
+    const usuario = await lastValueFrom(
+      this.usuariosClient.send('obtener.usuario', { id: payload.sub, token }),
+    ).catch(() => {
+      throw new UnauthorizedException('Usuario no válido o sin permisos');
+    });
+
+    return usuario;
+  }
 
   async crearLista(nombre: string, token: string) {
     if (!token) throw new UnauthorizedException('Token requerido');
 
-    // Verificar token con microservicio de autenticación
-    const payload = await lastValueFrom(
-      this.authClient.send('verificar.token', { token }),
-    ).catch((err) => {
-      throw new UnauthorizedException('Token inválido');
-    });
-
-    const usuarioId = payload.sub;
+    const { id: usuarioId } = await this.verificarTokenYRol(token);
 
     const nuevaLista = this.listasRepo.create({
       nombre,
@@ -50,131 +60,130 @@ export class ListasService {
       fechaCreacion: guardada.fechaCreacion.toISOString(),
     };
   }
+
   async eliminarLista(listaId: string, token: string) {
-  if (!token) throw new UnauthorizedException('Token requerido');
+    if (!token) throw new UnauthorizedException('Token requerido');
 
-  // Verificación del token con Auth
-  const payload = await lastValueFrom(
-    this.authClient.send('verificar.token', { token }),
-  ).catch(() => {
-    throw new UnauthorizedException('Token inválido');
-  });
+    const { id: usuarioId } = await this.verificarTokenYRol(token);
 
-  const lista = await this.listasRepo.findOne({
-    where: { id: listaId, softDelete: false },
-  });
+    const lista = await this.listasRepo.findOne({
+      where: { id: listaId, softDelete: false },
+    });
 
-  if (!lista) {
-    throw new NotFoundException('Lista no encontrada');
-  }
+    if (!lista) throw new NotFoundException('Lista no encontrada');
 
-  if (lista.usuarioId !== payload.sub) {
-    throw new ForbiddenException('No tienes permiso para eliminar esta lista');
-  }
+    if (lista.usuarioId !== usuarioId) {
+      throw new ForbiddenException('No tienes permiso para eliminar esta lista');
+    }
 
-  lista.softDelete = true;
-  await this.listasRepo.save(lista);
+    lista.softDelete = true;
+    await this.listasRepo.save(lista);
 
-  return {}; // gRPC espera objeto vacío
+    return {}; // gRPC espera objeto vacío
   }
 
   async obtenerListas(token: string) {
-  if (!token) throw new UnauthorizedException('Token requerido');
+    if (!token) throw new UnauthorizedException('Token requerido');
 
-  const payload = await lastValueFrom(
-    this.authClient.send('verificar.token', { token }),
-  ).catch(() => {
-    throw new UnauthorizedException('Token inválido');
-  });
+    const { id: usuarioId } = await this.verificarTokenYRol(token);
 
-  const usuarioId = payload.sub;
+    const listas = await this.listasRepo.find({
+      where: { usuarioId, softDelete: false },
+      order: { fechaCreacion: 'DESC' },
+    });
 
-  const listas = await this.listasRepo.find({
-    where: { usuarioId, softDelete: false },
-    order: { fechaCreacion: 'DESC' },
-  });
+    return {
+      listas: listas.map((lista) => ({
+        id: lista.id,
+        nombre: lista.nombre,
+        usuarioId: lista.usuarioId,
+        fechaCreacion: lista.fechaCreacion.toISOString(),
+      })),
+    };
+  }
 
-  return {
-    listas: listas.map((lista) => ({
+  async anadirVideo(listaId: string, videoId: string, token: string) {
+    if (!token) throw new UnauthorizedException('Token requerido');
+
+    const { id: usuarioId } = await this.verificarTokenYRol(token);
+
+    const lista = await this.listasRepo.findOne({
+      where: { id: listaId, softDelete: false },
+    });
+    if (!lista) throw new NotFoundException('Lista no encontrada');
+
+    if (lista.usuarioId !== usuarioId) {
+      throw new ForbiddenException('No autorizado');
+    }
+
+    const nuevo = this.listaVideoRepo.create({ lista, videoId });
+    await this.listaVideoRepo.save(nuevo);
+
+    return {
       id: lista.id,
       nombre: lista.nombre,
       usuarioId: lista.usuarioId,
       fechaCreacion: lista.fechaCreacion.toISOString(),
-    })),
-  };
+    };
   }
 
-  async anadirVideo(listaId: string, videoId: string, token: string) {
-  if (!token) throw new UnauthorizedException('Token requerido');
+  async eliminarVideo(listaId: string, videoId: string, token: string) {
+    if (!token) throw new UnauthorizedException('Token requerido');
 
-  const payload = await lastValueFrom(
-    this.authClient.send('verificar.token', { token }),
-  ).catch(() => {
-    throw new UnauthorizedException('Token inválido');
-  });
+    const { id: usuarioId } = await this.verificarTokenYRol(token);
 
-  const lista = await this.listasRepo.findOne({ where: { id: listaId, softDelete: false } });
-  if (!lista) throw new NotFoundException('Lista no encontrada');
+    const lista = await this.listasRepo.findOne({
+      where: { id: listaId, softDelete: false },
+    });
+    if (!lista) throw new NotFoundException('Lista no encontrada');
 
-  if (lista.usuarioId !== payload.sub) throw new ForbiddenException('No autorizado');
+    if (lista.usuarioId !== usuarioId) {
+      throw new ForbiddenException('No autorizado');
+    }
 
-  const nuevo = this.listaVideoRepo.create({ lista, videoId });
-  await this.listaVideoRepo.save(nuevo);
+    await this.listaVideoRepo.delete({ lista: { id: listaId }, videoId });
 
-  return {
-    id: lista.id,
-    nombre: lista.nombre,
-    usuarioId: lista.usuarioId,
-    fechaCreacion: lista.fechaCreacion.toISOString(),
-  };
-}
+    return {
+      id: lista.id,
+      nombre: lista.nombre,
+      usuarioId: lista.usuarioId,
+      fechaCreacion: lista.fechaCreacion.toISOString(),
+    };
+  }
 
-async eliminarVideo(listaId: string, videoId: string, token: string) {
-  if (!token) throw new UnauthorizedException('Token requerido');
+  async obtenerVideosLista(listaId: string, token: string) {
+    if (!token) throw new UnauthorizedException('Token requerido');
 
-  const payload = await lastValueFrom(
-    this.authClient.send('verificar.token', { token }),
-  ).catch(() => {
-    throw new UnauthorizedException('Token inválido');
-  });
+    const { id: usuarioId } = await this.verificarTokenYRol(token);
 
-  const lista = await this.listasRepo.findOne({ where: { id: listaId, softDelete: false } });
-  if (!lista) throw new NotFoundException('Lista no encontrada');
+    const lista = await this.listasRepo.findOne({
+      where: { id: listaId, softDelete: false },
+    });
+    if (!lista) throw new NotFoundException('Lista no encontrada');
 
-  if (lista.usuarioId !== payload.sub) throw new ForbiddenException('No autorizado');
+    if (lista.usuarioId !== usuarioId) {
+      throw new ForbiddenException('No autorizado');
+    }
 
-  await this.listaVideoRepo.delete({ lista: { id: listaId }, videoId });
+    const relaciones = await this.listaVideoRepo.find({
+      where: { lista: { id: listaId } },
+    });
 
-  return {
-    id: lista.id,
-    nombre: lista.nombre,
-    usuarioId: lista.usuarioId,
-    fechaCreacion: lista.fechaCreacion.toISOString(),
-  };
-}
+    const resultados: any[] = [];
 
-async obtenerVideosLista(listaId: string, token: string) {
-  if (!token) throw new UnauthorizedException('Token requerido');
+    for (const relacion of relaciones) {
+      try {
+        const video = await lastValueFrom(
+          this.videosClient.send('obtener.video.por.id', {
+            id: relacion.videoId,
+          }),
+        );
+        resultados.push(video);
+      } catch (e) {
+        // Video no disponible
+      }
+    }
 
-  const payload = await lastValueFrom(
-    this.authClient.send('verificar.token', { token }),
-  ).catch(() => {
-    throw new UnauthorizedException('Token inválido');
-  });
-
-  const lista = await this.listasRepo.findOne({ where: { id: listaId, softDelete: false } });
-  if (!lista) throw new NotFoundException('Lista no encontrada');
-
-  if (lista.usuarioId !== payload.sub) throw new ForbiddenException('No autorizado');
-
-  const videos = await this.listaVideoRepo.find({
-    where: { lista: { id: listaId } },
-  });
-
-  return {
-    videoIds: videos.map((v) => v.videoId),
-  };
-}
-
-
+    return { videos: resultados };
+  }
 }

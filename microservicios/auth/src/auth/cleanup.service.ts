@@ -11,7 +11,8 @@ export class CleanupService {
     private readonly blacklistRepo: Repository<TokenBlacklist>,
   ) {}
 
-  @Cron('*/1 * * * *') // Cada 1 minuto
+  @Cron('0 * * * *') // Cada 1 hora en el minuto 0
+
     async limpiar() {
     const now = new Date();
     const result = await this.blacklistRepo.delete({ expiresAt: LessThan(now) });

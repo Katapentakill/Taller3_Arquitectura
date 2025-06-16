@@ -1,13 +1,14 @@
 syntax = "proto3";
-import "google/protobuf/empty.proto";
 
 package usuarios;
 
 service UsuariosService {
   rpc CrearUsuario (CrearUsuarioRequest) returns (UsuarioResponse);
-  rpc ObtenerUsuarioPorId (ObtenerUsuarioRequest) returns (UsuarioResponse);
-  rpc ListarUsuarios (TokenRequest) returns (ListarUsuariosResponse);
-  rpc EliminarUsuario (EliminarUsuarioRequest) returns (google.protobuf.Empty);
+  rpc ObtenerUsuarioPorId (UsuarioPorIdRequest) returns (UsuarioResponse);
+  rpc ActualizarUsuario (ActualizarUsuarioRequest) returns (UsuarioResponse);
+  rpc EliminarUsuario (EliminarUsuarioRequest) returns (Empty);
+  rpc ListarUsuarios (ListarUsuariosRequest) returns (ListaUsuariosResponse);
+  rpc SeedUsuarios (Empty) returns (MensajeResponse);
 }
 
 message CrearUsuarioRequest {
@@ -17,20 +18,29 @@ message CrearUsuarioRequest {
   string password = 4;
   string confirmarPassword = 5;
   string rol = 6;
+  string token = 7; // solo necesario si quiere registrar un admin
 }
 
-message ObtenerUsuarioRequest {
+message UsuarioPorIdRequest {
   string id = 1;
   string token = 2;
 }
 
-message TokenRequest {
-  string token = 1;
+message ActualizarUsuarioRequest {
+  string id = 1;
+  string nombre = 2;
+  string apellido = 3;
+  string correo = 4;
+  string token = 5;
 }
 
 message EliminarUsuarioRequest {
   string id = 1;
   string token = 2;
+}
+
+message ListarUsuariosRequest {
+  string token = 1;
 }
 
 message UsuarioResponse {
@@ -42,6 +52,12 @@ message UsuarioResponse {
   string fechaRegistro = 6;
 }
 
-message ListarUsuariosResponse {
+message ListaUsuariosResponse {
   repeated UsuarioResponse usuarios = 1;
 }
+
+message MensajeResponse {
+  string mensaje = 1;
+}
+
+message Empty {}
