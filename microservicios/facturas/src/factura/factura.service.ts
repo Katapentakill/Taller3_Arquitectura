@@ -4,11 +4,11 @@ import {
   BadRequestException,
   ForbiddenException,
   NotFoundException,
+  Inject,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Factura } from '../entity/factura.entity';
-import { Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { faker } from '@faker-js/faker';
@@ -32,7 +32,6 @@ export class FacturaService {
   }
 
   async seedFacturas() {
-    // Sin cambios, esta función no requiere validación de token
     const usuariosResponse = await lastValueFrom(
       this.rabbitMQClient.send('obtener.usuarios', {}),
     ).catch(() => {
@@ -90,7 +89,13 @@ export class FacturaService {
   }
 
   async crear(data: any) {
-    const payload = await this.verificarTokenYRol(data.token);
+    if (!data.token) throw new UnauthorizedException('Token requerido');
+
+    const payload = await lastValueFrom(
+      this.rabbitMQClient.send('verificar.token.y.rol', { token: data.token }),
+    ).catch(() => {
+      throw new UnauthorizedException('Token inválido');
+    });
 
     if (payload.rol !== 'Administrador') {
       throw new ForbiddenException('Solo administradores pueden crear facturas');
@@ -116,7 +121,13 @@ export class FacturaService {
   }
 
   async obtenerPorId(data: { id: string; token: string }) {
-    const payload = await this.verificarTokenYRol(data.token);
+    if (!data.token) throw new UnauthorizedException('Token requerido');
+
+    const payload = await lastValueFrom(
+      this.rabbitMQClient.send('verificar.token.y.rol', { token: data.token }),
+    ).catch(() => {
+      throw new UnauthorizedException('Token inválido');
+    });
 
     const factura = await this.facturaRepo.findOneBy({ id: data.id, eliminado: false });
     if (!factura) throw new NotFoundException('Factura no encontrada');
@@ -129,7 +140,13 @@ export class FacturaService {
   }
 
   async actualizar(data: { id: string; estado: string; token: string }) {
-    const payload = await this.verificarTokenYRol(data.token);
+    if (!data.token) throw new UnauthorizedException('Token requerido');
+
+    const payload = await lastValueFrom(
+      this.rabbitMQClient.send('verificar.token.y.rol', { token: data.token }),
+    ).catch(() => {
+      throw new UnauthorizedException('Token inválido');
+    });
 
     if (payload.rol !== 'Administrador') {
       throw new ForbiddenException('Solo administradores pueden actualizar facturas');
@@ -149,7 +166,13 @@ export class FacturaService {
   }
 
   async eliminar(data: { id: string; token: string }) {
-    const payload = await this.verificarTokenYRol(data.token);
+    if (!data.token) throw new UnauthorizedException('Token requerido');
+
+    const payload = await lastValueFrom(
+      this.rabbitMQClient.send('verificar.token.y.rol', { token: data.token }),
+    ).catch(() => {
+      throw new UnauthorizedException('Token inválido');
+    });
 
     if (payload.rol !== 'Administrador') {
       throw new ForbiddenException('Solo administradores pueden eliminar facturas');
@@ -167,7 +190,13 @@ export class FacturaService {
   }
 
   async obtenerTodas(data: { token: string; estado?: string }) {
-    const payload = await this.verificarTokenYRol(data.token);
+    if (!data.token) throw new UnauthorizedException('Token requerido');
+
+    const payload = await lastValueFrom(
+      this.rabbitMQClient.send('verificar.token.y.rol', { token: data.token }),
+    ).catch(() => {
+      throw new UnauthorizedException('Token inválido');
+    });
 
     const where: any = { eliminado: false };
 
@@ -180,16 +209,8 @@ export class FacturaService {
       where.estado = data.estado;
     }
 
-    return await this.facturaRepo.find({ where });
-  }
+    const facturas = await this.facturaRepo.find({ where });
 
-  private async verificarTokenYRol(token: string) {
-    if (!token) throw new UnauthorizedException('Token requerido');
-
-    return await lastValueFrom(
-      this.rabbitMQClient.send('verificar.token.y.rol', { token }),
-    ).catch(() => {
-      throw new UnauthorizedException('Token inválido');
-    });
+    return { facturas };
   }
 }
