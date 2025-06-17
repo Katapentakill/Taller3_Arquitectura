@@ -9,4 +9,12 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  // ✅ NUEVO ENDPOINT para probar el balanceo
+  @Get('ping')
+  getPing() {
+    return {
+      puerto: process.env.PORT,
+    };
+  }
 }

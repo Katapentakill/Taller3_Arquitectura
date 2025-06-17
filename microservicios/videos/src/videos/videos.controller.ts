@@ -1,3 +1,5 @@
+videos controller microservicio
+
 import { Controller } from '@nestjs/common';
 import { EventPattern, GrpcMethod } from '@nestjs/microservices';
 import { VideosService } from './videos.service';
@@ -22,7 +24,7 @@ export class VideosController {
   }
 
   @GrpcMethod('VideosService', 'CrearVideo')
-  crearVideo(data: { title: string; description: string; genre: string; token: string }) {
+  crearVideo(data: { title: string; description: string; genre: string; price: number; token: string }) {
     return this.videosService.crearVideo(data);
   }
 
@@ -42,7 +44,7 @@ export class VideosController {
   }
 
   @GrpcMethod('VideosService', 'ActualizarVideo')
-  actualizarVideo(data: { id: string; title: string; description: string; genre: string; token: string }) {
+  actualizarVideo(data: { id: string; title?: string; description?: string; genre?: string; price?: number; token: string }) {
     return this.videosService.actualizarVideo(data);
   }
 
