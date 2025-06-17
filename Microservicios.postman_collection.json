@@ -17,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"correo\": \"pedro1@example.com\",\r\n  \"password\": \"123456\"\r\n}",
+							"raw": "{\r\n  \"correo\": \"usuarioa612638b@test.com\",\r\n  \"password\": \"123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -47,7 +47,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYzkwNjEzYS0yNzA5LTQ5M2YtOWU1NC0xMGY3ZmExMGI1MDkiLCJjb3JyZW8iOiJwZWRybzFAZXhhbXBsZS5jb20iLCJpYXQiOjE3NDY0MjczMTAsImV4cCI6MTc0NjQzMDkxMH0.yMp-46sNk-VbI1HvrT9wjeo_bMEgEk2eKGdjxnHf-Hg",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZGJkMzU0My1kMWY3LTRlMGYtODNhOS1iOGNmNzc0ZjhiNzIiLCJjb3JyZW8iOiJzb2ZpYVRFU1RJTkcyQGV4YW1wbGUuY29tIiwiaWF0IjoxNzQ3MTAxNzYxLCJleHAiOjE3NDcxMDUzNjF9.eyYKnEMJTzuDrTHtkpOR8F_TOzXtqz13xHrQGD_znkk",
 									"type": "string"
 								}
 							]
@@ -78,7 +78,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "6a2dce35-2118-4a6a-98fe-51d6bddf433a"
+									"value": "5dbd3543-d1f7-4e0f-83a9-b8cf774f8b72"
 								}
 							]
 						}
@@ -93,7 +93,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZGJkMzU0My1kMWY3LTRlMGYtODNhOS1iOGNmNzc0ZjhiNzIiLCJjb3JyZW8iOiJzb2ZpYVRFU1RJTkcyQGV4YW1wbGUuY29tIiwiaWF0IjoxNzQ3MTAxNzYxLCJleHAiOjE3NDcxMDUzNjF9.eyYKnEMJTzuDrTHtkpOR8F_TOzXtqz13xHrQGD_znkk",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0Nzk5NTM4ZC1hZTlhLTQzYTgtYjY2My0wNDRlZTgzZjhmZWEiLCJjb3JyZW8iOiJ1c3VhcmlvYTYxMjYzOGJAdGVzdC5jb20iLCJpYXQiOjE3NTAxMjg1MDgsImV4cCI6MTc1MDEzMjEwOH0.m7_y0okdYkqFuro3g09XY2heltt00So7DXaoCUcOhS8",
 									"type": "string"
 								}
 							]
@@ -110,12 +110,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3002/auth/logout",
+							"raw": "http://localhost:3000/auth/logout",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3002",
+							"port": "3000",
 							"path": [
 								"auth",
 								"logout"
@@ -136,7 +136,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nombre\": \"Juan\",\r\n  \"apellido\": \"Pérez\",\r\n  \"correo\": \"juan.perez@example.com\",\r\n  \"password\": \"123456\",\r\n  \"confirmarPassword\": \"123456\",\r\n  \"rol\": \"usuario\"\r\n}",
+							"raw": "{\r\n  \"nombre\": \"Sofía\",\r\n  \"apellido\": \"Pérez\",\r\n  \"correo\": \"sofiaTESTING2@example.com\",\r\n  \"password\": \"123456\",\r\n  \"confirmarPassword\": \"123456\",\r\n  \"rol\": \"cliente\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -160,14 +160,52 @@
 				{
 					"name": "Obtener usuario",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZjAzZTA2Yy02NjM2LTQwYjUtOTYzYS1jOGUxZTQ0MjA5ZjAiLCJjb3JyZW8iOiJ1c3VhcmlvMmI1MTc0ZDRAdGVzdC5jb20iLCJpYXQiOjE3NTAwNDA3NzAsImV4cCI6MTc1MDA0NDM3MH0.B-hUBRjxkPdVQx8vBSNqNLiKWcVUzZIG9_lEgDOaGbg",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/usuarios/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"usuarios",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "61088406-3ca9-47d1-840e-176341f102ea"
+								}
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "Listar usuario",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZjAzZTA2Yy02NjM2LTQwYjUtOTYzYS1jOGUxZTQ0MjA5ZjAiLCJjb3JyZW8iOiJ1c3VhcmlvMmI1MTc0ZDRAdGVzdC5jb20iLCJpYXQiOjE3NTAwNDA3NzAsImV4cCI6MTc1MDA0NDM3MH0.B-hUBRjxkPdVQx8vBSNqNLiKWcVUzZIG9_lEgDOaGbg",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -188,6 +226,16 @@
 				{
 					"name": "Eliminar usuario",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZjAzZTA2Yy02NjM2LTQwYjUtOTYzYS1jOGUxZTQ0MjA5ZjAiLCJjb3JyZW8iOiJ1c3VhcmlvMmI1MTc0ZDRAdGVzdC5jb20iLCJpYXQiOjE3NTAwNDA3NzAsImV4cCI6MTc1MDA0NDM3MH0.B-hUBRjxkPdVQx8vBSNqNLiKWcVUzZIG9_lEgDOaGbg",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -204,7 +252,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "61088406-3ca9-47d1-840e-176341f102ea"
 								}
 							]
 						}
@@ -234,8 +282,45 @@
 				{
 					"name": "Actualizar usuario",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZjAzZTA2Yy02NjM2LTQwYjUtOTYzYS1jOGUxZTQ0MjA5ZjAiLCJjb3JyZW8iOiJ1c3VhcmlvMmI1MTc0ZDRAdGVzdC5jb20iLCJpYXQiOjE3NTAwNDA3NzAsImV4cCI6MTc1MDA0NDM3MH0.B-hUBRjxkPdVQx8vBSNqNLiKWcVUzZIG9_lEgDOaGbg",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PATCH",
-						"header": []
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Carlos\",\r\n  \"apellido\": \"González\",\r\n  \"correo\": \"carlos.gonzalez@demo.cl\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/usuarios/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"usuarios",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "61088406-3ca9-47d1-840e-176341f102ea"
+								}
+							]
+						}
 					},
 					"response": []
 				}
@@ -247,11 +332,21 @@
 				{
 					"name": "Crear Lista",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZGJkMzU0My1kMWY3LTRlMGYtODNhOS1iOGNmNzc0ZjhiNzIiLCJjb3JyZW8iOiJzb2ZpYVRFU1RJTkcyQGV4YW1wbGUuY29tIiwiaWF0IjoxNzQ3MTQ4ODg3LCJleHAiOjE3NDcxNTI0ODd9.NKt-lfRnoQeQX5uAIMwn_EVxQsGyvY0oZhSpNgRc5X0",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "",
+							"raw": "{\r\n  \"nombre\": \"Mi lista favorita\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -279,6 +374,16 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZjAzZTA2Yy02NjM2LTQwYjUtOTYzYS1jOGUxZTQ0MjA5ZjAiLCJjb3JyZW8iOiJ1c3VhcmlvMmI1MTc0ZDRAdGVzdC5jb20iLCJpYXQiOjE3NTAwNDA3NzAsImV4cCI6MTc1MDA0NDM3MH0.B-hUBRjxkPdVQx8vBSNqNLiKWcVUzZIG9_lEgDOaGbg",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"body": {
@@ -311,14 +416,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000//listas-reproduccion/:id",
+							"raw": "http://localhost:3000/listas-reproduccion/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
-								"",
 								"listas-reproduccion",
 								":id"
 							],
@@ -389,6 +493,16 @@
 				{
 					"name": "Ver videos de una lista de reproducción",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZjAzZTA2Yy02NjM2LTQwYjUtOTYzYS1jOGUxZTQ0MjA5ZjAiLCJjb3JyZW8iOiJ1c3VhcmlvMmI1MTc0ZDRAdGVzdC5jb20iLCJpYXQiOjE3NTAwNDA3NzAsImV4cCI6MTc1MDA0NDM3MH0.B-hUBRjxkPdVQx8vBSNqNLiKWcVUzZIG9_lEgDOaGbg",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -406,7 +520,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "c06883f0-2302-40d0-a212-9ba89c04163a"
 								}
 							]
 						}
@@ -441,7 +555,55 @@
 				{
 					"name": "Crear una nueva factura",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZjAzZTA2Yy02NjM2LTQwYjUtOTYzYS1jOGUxZTQ0MjA5ZjAiLCJjb3JyZW8iOiJ1c3VhcmlvMmI1MTc0ZDRAdGVzdC5jb20iLCJpYXQiOjE3NTAxMjAxMDMsImV4cCI6MTc1MDEyMzcwM30.exjD2BIxLUJ8X6-K8Wo9gpXgH_sAA2tbj55ha0UcKNs",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"usuarioId\": \"2adbe715-75dd-471a-a442-01d6433eba2c\",\r\n  \"estado\": \"Pagado\",\r\n  \"metodoPago\": \"Transferencia\",\r\n  \"total\": 8678,\r\n  \"videosComprados\": [\r\n    {\r\n      \"videoId\": \"684f3c6c5b42b263a960119e\",\r\n      \"titulo\": \"Nuevo título del video\",\r\n      \"precio\": 2235\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/facturas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"facturas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener factura por ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZjAzZTA2Yy02NjM2LTQwYjUtOTYzYS1jOGUxZTQ0MjA5ZjAiLCJjb3JyZW8iOiJ1c3VhcmlvMmI1MTc0ZDRAdGVzdC5jb20iLCJpYXQiOjE3NTAxMTkzOTQsImV4cCI6MTc1MDEyMjk5NH0.0MYKphRbdUkf4V6og2V_-hSbNfxi78j_b_FlnzGKixg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
 						"header": [],
 						"url": {
 							"raw": "http://localhost:3000/facturas/:id",
@@ -457,7 +619,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "3b0cb458-6fc9-4d9e-8b09-00c0b5fbb3ea"
 								}
 							]
 						}
@@ -465,36 +627,103 @@
 					"response": []
 				},
 				{
-					"name": "Obtener factura por ID",
-					"request": {
-						"method": "GET",
-						"header": []
-					},
-					"response": []
-				},
-				{
 					"name": "Actualizar estado de una factura",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZjAzZTA2Yy02NjM2LTQwYjUtOTYzYS1jOGUxZTQ0MjA5ZjAiLCJjb3JyZW8iOiJ1c3VhcmlvMmI1MTc0ZDRAdGVzdC5jb20iLCJpYXQiOjE3NTAxMjA1MjgsImV4cCI6MTc1MDEyNDEyOH0.2M_pg3BBWbttPtjoWhT_24L6vSvXYlK3KCJxX8zlVgc",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PATCH",
-						"header": []
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"estado\": \"Pendiente\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/facturas/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"facturas",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "b380dad2-5660-4edc-a799-0017a6c149a3"
+								}
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "Eliminar (soft delete) una factura",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZjAzZTA2Yy02NjM2LTQwYjUtOTYzYS1jOGUxZTQ0MjA5ZjAiLCJjb3JyZW8iOiJ1c3VhcmlvMmI1MTc0ZDRAdGVzdC5jb20iLCJpYXQiOjE3NTAxMTkzOTQsImV4cCI6MTc1MDEyMjk5NH0.0MYKphRbdUkf4V6og2V_-hSbNfxi78j_b_FlnzGKixg",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/facturas/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"facturas",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3b0cb458-6fc9-4d9e-8b09-00c0b5fbb3ea"
+								}
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "Listar facturas, con filtro opcional por estado",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZjAzZTA2Yy02NjM2LTQwYjUtOTYzYS1jOGUxZTQ0MjA5ZjAiLCJjb3JyZW8iOiJ1c3VhcmlvMmI1MTc0ZDRAdGVzdC5jb20iLCJpYXQiOjE3NTAxMTkzOTQsImV4cCI6MTc1MDEyMjk5NH0.0MYKphRbdUkf4V6og2V_-hSbNfxi78j_b_FlnzGKixg",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/facturas",
+							"raw": "http://localhost:3000/facturas?estado=",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -502,6 +731,12 @@
 							"port": "3000",
 							"path": [
 								"facturas"
+							],
+							"query": [
+								{
+									"key": "estado",
+									"value": ""
+								}
 							]
 						}
 					},
@@ -535,8 +770,27 @@
 				{
 					"name": "Crear Video",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZjAzZTA2Yy02NjM2LTQwYjUtOTYzYS1jOGUxZTQ0MjA5ZjAiLCJjb3JyZW8iOiJ1c3VhcmlvMmI1MTc0ZDRAdGVzdC5jb20iLCJpYXQiOjE3NTAxMTkzOTQsImV4cCI6MTc1MDEyMjk5NH0.0MYKphRbdUkf4V6og2V_-hSbNfxi78j_b_FlnzGKixg",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Nombre del video\",\r\n  \"description\": \"Descripción del contenido del video\",\r\n  \"genre\": \"Género del video (ej: Acción, Drama, Comedia)\",\r\n  \"price\": 2990\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "http://localhost:3000/videos",
 							"protocol": "http",
@@ -554,6 +808,16 @@
 				{
 					"name": "Obtener Video por ID",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZjAzZTA2Yy02NjM2LTQwYjUtOTYzYS1jOGUxZTQ0MjA5ZjAiLCJjb3JyZW8iOiJ1c3VhcmlvMmI1MTc0ZDRAdGVzdC5jb20iLCJpYXQiOjE3NTAxMTUxOTYsImV4cCI6MTc1MDExODc5Nn0.aufQwYfmbIFCAj6y2pNDT6ZZVapZTE1_Uj5xVuQl-ac",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -570,7 +834,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "684f3c6c5b42b263a960119d"
 								}
 							]
 						}
@@ -580,6 +844,16 @@
 				{
 					"name": "Listar Todos los Videos",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZjAzZTA2Yy02NjM2LTQwYjUtOTYzYS1jOGUxZTQ0MjA5ZjAiLCJjb3JyZW8iOiJ1c3VhcmlvMmI1MTc0ZDRAdGVzdC5jb20iLCJpYXQiOjE3NTAxMTkzOTQsImV4cCI6MTc1MDEyMjk5NH0.0MYKphRbdUkf4V6og2V_-hSbNfxi78j_b_FlnzGKixg",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -599,6 +873,16 @@
 				{
 					"name": "Eliminar Video",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZjAzZTA2Yy02NjM2LTQwYjUtOTYzYS1jOGUxZTQ0MjA5ZjAiLCJjb3JyZW8iOiJ1c3VhcmlvMmI1MTc0ZDRAdGVzdC5jb20iLCJpYXQiOjE3NTAxMTUxOTYsImV4cCI6MTc1MDExODc5Nn0.aufQwYfmbIFCAj6y2pNDT6ZZVapZTE1_Uj5xVuQl-ac",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -615,7 +899,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "684f3c6c5b42b263a960119d"
 								}
 							]
 						}
@@ -625,8 +909,27 @@
 				{
 					"name": "Actualizar Video",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZjAzZTA2Yy02NjM2LTQwYjUtOTYzYS1jOGUxZTQ0MjA5ZjAiLCJjb3JyZW8iOiJ1c3VhcmlvMmI1MTc0ZDRAdGVzdC5jb20iLCJpYXQiOjE3NTAxMTc4MzIsImV4cCI6MTc1MDEyMTQzMn0.F_N1Ao76QE0FqeNmaMDQ1pOSxb_6EcG3zBuCJ0Bmyns",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PATCH",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Nombre del video\",\r\n  \"description\": \"Descripción del contenido del video\",\r\n  \"genre\": \"Género del video (ej: Acción, Drama, Comedia)\",\r\n  \"price\": 2990\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "http://localhost:3000/videos/:id",
 							"protocol": "http",
@@ -641,7 +944,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "684f3c6c5b42b263a960119e"
 								}
 							]
 						}
@@ -651,10 +954,20 @@
 				{
 					"name": "Buscar Video por Título",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZjAzZTA2Yy02NjM2LTQwYjUtOTYzYS1jOGUxZTQ0MjA5ZjAiLCJjb3JyZW8iOiJ1c3VhcmlvMmI1MTc0ZDRAdGVzdC5jb20iLCJpYXQiOjE3NTAxMTkzOTQsImV4cCI6MTc1MDEyMjk5NH0.0MYKphRbdUkf4V6og2V_-hSbNfxi78j_b_FlnzGKixg",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/videos/buscar/titulo?titulo=NombreBuscado",
+							"raw": "http://localhost:3000/videos/buscar/titulo?titulo=bellicus",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -668,7 +981,7 @@
 							"query": [
 								{
 									"key": "titulo",
-									"value": "NombreBuscado"
+									"value": "bellicus"
 								}
 							]
 						}
@@ -748,10 +1061,20 @@
 				{
 					"name": "Dar Like a un Video",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0Nzk5NTM4ZC1hZTlhLTQzYTgtYjY2My0wNDRlZTgzZjhmZWEiLCJjb3JyZW8iOiJ1c3VhcmlvYTYxMjYzOGJAdGVzdC5jb20iLCJpYXQiOjE3NTAxMjM4MjcsImV4cCI6MTc1MDEyNzQyN30.wGafOzfJPuObT6dwTAWAXuWYcd2UeeA2LnEgAAPPzsE",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/interacciones/like",
+							"raw": "http://localhost:3000/interacciones/:videoId/like",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -759,7 +1082,14 @@
 							"port": "3000",
 							"path": [
 								"interacciones",
+								":videoId",
 								"like"
+							],
+							"variable": [
+								{
+									"key": "videoId",
+									"value": "684f3c6c5b42b263a960119d"
+								}
 							]
 						}
 					},
@@ -768,10 +1098,29 @@
 				{
 					"name": "Dejar Comentario en un Video",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0Nzk5NTM4ZC1hZTlhLTQzYTgtYjY2My0wNDRlZTgzZjhmZWEiLCJjb3JyZW8iOiJ1c3VhcmlvYTYxMjYzOGJAdGVzdC5jb20iLCJpYXQiOjE3NTAxMjM4MjcsImV4cCI6MTc1MDEyNzQyN30.wGafOzfJPuObT6dwTAWAXuWYcd2UeeA2LnEgAAPPzsE",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"content\": \"Este video me pareció muy interesante.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:3000/interacciones/comentario",
+							"raw": "http://localhost:3000/interacciones/:videoId/comentario",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -779,7 +1128,14 @@
 							"port": "3000",
 							"path": [
 								"interacciones",
+								":videoId",
 								"comentario"
+							],
+							"variable": [
+								{
+									"key": "videoId",
+									"value": ""
+								}
 							]
 						}
 					},
@@ -788,6 +1144,16 @@
 				{
 					"name": "Obtener Interacciones de un Video",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0Nzk5NTM4ZC1hZTlhLTQzYTgtYjY2My0wNDRlZTgzZjhmZWEiLCJjb3JyZW8iOiJ1c3VhcmlvYTYxMjYzOGJAdGVzdC5jb20iLCJpYXQiOjE3NTAxMjMzNzksImV4cCI6MTc1MDEyNjk3OX0.rB1lZIIvL49K2pE0tHfkrKZqJqNNJIeQWRt34G5d2f4",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -804,7 +1170,7 @@
 							"variable": [
 								{
 									"key": "videoId",
-									"value": ""
+									"value": "684f3c6c5b42b263a960119d"
 								}
 							]
 						}
