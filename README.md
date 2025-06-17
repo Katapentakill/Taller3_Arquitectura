@@ -123,16 +123,16 @@ http {
 }
 ```
 
-2. Desde PowerShell, ejecuta:
+2. Desde PowerShell, ejecuta donde este la api gateway, aqui un ejemplo de mi caso:
 
 ```powershell
-cd C:\Proyectos\taller2
+cd C:\Proyectos\taller2\api
 $env:PORT=3005; npm run start
 # En otro terminal:
 $env:PORT=3006; npm run start
 ```
 
-3. Luego corre NGINX con Docker:
+3. Luego corre NGINX con Docker, esto desde donde tengas el archivo ngix.conf en mi caso es C:\Proyectos\taller2:
 
 ```powershell
 docker run --name nginx-taller2 -p 3000:3000 -v "${PWD}\nginx.conf:/etc/nginx/nginx.conf:ro" -d nginx
@@ -193,6 +193,23 @@ A través de la API Gateway:
 - `POST /interacciones/seed`
 
 ---
+###  Seeder
+Tener en consideracion este orden para ejecutar los endpoints de seeders
+1. Usuarios
+2. Videos
+3. Facturas
+4. Interacciones sociales
+
+# Cada uno de estos tiene un endpoint de seeder si les da algun error es porque no ejecutaron bien el orden, ademas hay que tener corriendo todos los microservicios a excepcion de correo y monitoreo
+
+---
+### Consejo
+
+Si mongo db no se conecta abrir cmd en administrador y usar este comando
+
+net start MongoDB
+
+
 
 ## 🗄️ Bases de datos por microservicio
 
