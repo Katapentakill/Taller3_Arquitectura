@@ -20,12 +20,14 @@ interface CrearVideoRequest {
   title: string;
   description: string;
   genre: string;
+  price: number;
 }
 
 interface ActualizarVideoRequest {
   title?: string;
   description?: string;
   genre?: string;
+  price?: number;
 }
 
 

@@ -1,3 +1,5 @@
+README
+
 # 🎯 Taller 2 - Arquitectura de Microservicios
 
 Este repositorio corresponde al Taller 2 de Arquitectura de Sistemas, donde se implementa una arquitectura distribuida basada en **microservicios** utilizando **NestJS**, **gRPC**, **RabbitMQ**, y múltiples bases de datos.
@@ -11,8 +13,15 @@ Este trabajo corresponde a la implementación de los microservicios a cargo del 
 - ✅ auth → Microservicio de autenticación (PostgreSQL + JWT + blacklist)
 - ✅ usuarios → Gestión de usuarios (MariaDB + control por roles)
 - ✅ listas-reproduccion → Manejo de listas y videos (PostgreSQL)
-- ✅ correo → Envío de emails al recibir eventos factura.creada / factura.actualizada
+- ✅ correo → Envío de emails al recibir eventos factura.creada / factura.actualizada *(no implementado)*
 - ✅ API Gateway (exposición de todos los endpoints por HTTP)
+
+## 👨‍💻 Rol del Desarrollador B
+
+- ✅ facturas → CRUD de facturas (MariaDB)
+- ✅ interacciones sociales → Comentarios y likes (MongoDB)
+- ✅ monitoreo → Registro de acciones y errores *(no implementado)*
+- ✅ videos → CRUD de videos (MongoDB)
 
 ---
 
@@ -45,8 +54,8 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: admin
-      RABBITMQ_DEFAULT_PASS: admin
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
     networks:
       - microservices-net
 
@@ -70,6 +79,8 @@ npm install
 npm run start:dev
 ```
 
+---
+
 ## 🚪 API Gateway
 
 La API Gateway expone todos los endpoints vía HTTP y comunica con los microservicios por gRPC. Para ejecutarla:
@@ -82,11 +93,58 @@ npm run start:dev
 
 ---
 
+## 🔁 Balanceador de Carga con NGINX
+
+### Paso a paso para usar NGINX como balanceador en Windows
+
+1. Crea el archivo `nginx.conf` en la carpeta raíz del proyecto con el siguiente contenido:
+
+```nginx
+events {}
+
+http {
+    upstream apigateway_cluster {
+        server host.docker.internal:3005;
+        server host.docker.internal:3006;
+    }
+
+    server {
+        listen 3000;
+
+        location / {
+            proxy_pass http://apigateway_cluster;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_http_version 1.1;
+            proxy_set_header Connection "";
+        }
+    }
+}
+```
+
+2. Desde PowerShell, ejecuta:
+
+```powershell
+cd C:\Proyectos\taller2
+$env:PORT=3005; npm run start
+# En otro terminal:
+$env:PORT=3006; npm run start
+```
+
+3. Luego corre NGINX con Docker:
+
+```powershell
+docker run --name nginx-taller2 -p 3000:3000 -v "${PWD}\nginx.conf:/etc/nginx/nginx.conf:ro" -d nginx
+```
+
+Ahora puedes acceder a [http://localhost:3000](http://localhost:3000) y el tráfico será balanceado entre las dos instancias.
+
+---
+
 ## 📮 Endpoints disponibles
 
-A continuación se listan todos los endpoints expuestos a través de la API Gateway:
-
-## PARA LOS SEEDER PRIMERO USUARIOS, LUEGO VIDEOS, LUEGO FACTURAS O INTERACCIONES
+A través de la API Gateway:
 
 ### 🔐 Autenticación
 - `POST /auth/login`
@@ -117,8 +175,8 @@ A continuación se listan todos los endpoints expuestos a través de la API Gate
 - `POST /videos/seed`
 
 ### 📊 Monitoreo
-- `GET /monitoreo/acciones`
-- `GET /monitoreo/errores`
+- `GET /monitoreo/acciones` *(no implementado)*
+- `GET /monitoreo/errores` *(no implementado)*
 
 ### 🎵 Listas de Reproducción
 - `POST /listas-reproduccion`
@@ -136,9 +194,9 @@ A continuación se listan todos los endpoints expuestos a través de la API Gate
 
 ---
 
-## 🗄️ Bases de datos
+## 🗄️ Bases de datos por microservicio
 
-Cada microservicio tiene su propia base de datos. **Debes crear manualmente cada base con el nombre especificado en el archivo `.env` correspondiente**. Las tablas se generan automáticamente al correr los servicios.
+Las tablas/colecciones se crean automáticamente. **Debes crear manualmente la base de datos con el nombre indicado en el `.env` de cada servicio.**
 
 | Microservicio              | Motor       | Nombre base de datos (`.env`)      |
 |----------------------------|-------------|-------------------------------------|
@@ -151,27 +209,9 @@ Cada microservicio tiene su propia base de datos. **Debes crear manualmente cada
 | `interacciones sociales` | MongoDB     | `interacciones`                     |
 | `correo`                  | —           | *No utiliza base de datos*          |
 
----
+### 📁 Archivos `.env` por microservicio
 
-## 📌 Notas Finales
-
-- Este proyecto sigue una estructura monorepo  
-- Cada microservicio tiene su propio archivo `.env`  
-- Las bases de datos deben estar creadas antes de ejecutar los servicios  
-- RabbitMQ es esencial para la comunicación entre microservicios  
-- Se ha agregado el archivo de colección Postman y ajustes menores en el proyecto
-
----
-
-¿Dudas o preguntas?  
-Contáctame o revisa los comentarios en el código.
----
-
-## 📁 Archivos `.env` por microservicio
-
-A continuación se presentan los contenidos esperados para cada archivo `.env` según el microservicio correspondiente:
-
-### 🔐 auth `.env`
+#### 🔐 auth `.env`
 ```env
 DB_AUTH_HOST=localhost
 DB_AUTH_PORT=5432
@@ -183,13 +223,13 @@ JWT_SECRET=supersecreto123
 JWT_EXPIRES_IN=1h
 ```
 
-### 📧 correo `.env`
+#### 📧 correo `.env`
 ```env
 MAIL_USER=tu_correo@gmail.com
 MAIL_PASS=tu_contraseña_de_aplicacion
 ```
 
-### 🧾 facturas `.env`
+#### 🧾 facturas `.env`
 ```env
 DB_USERS_HOST=localhost
 DB_USERS_PORT=3306
@@ -198,12 +238,12 @@ DB_USERS_PASSWORD=123
 DB_FACTURAS_NAME=facturacion
 ```
 
-### 💬 interacciones `.env`
+#### 💬 interacciones `.env`
 ```env
 MONGO_INTERACCIONES_URI=mongodb://localhost:27017/interacciones
 ```
 
-### 🎵 listas-reproduccion `.env`
+#### 🎵 listas-reproduccion `.env`
 ```env
 DB_LISTAS_HOST=localhost
 DB_LISTAS_PORT=5432
@@ -212,12 +252,12 @@ DB_LISTAS_PASSWORD=123
 DB_LISTAS_NAME=listas_db
 ```
 
-### 📊 monitoreo `.env`
+#### 📊 monitoreo `.env`
 ```env
 MONGO_URI=mongodb://localhost:27017/micro_monitoreo
 ```
 
-### 👤 usuarios `.env`
+#### 👤 usuarios `.env`
 ```env
 DB_USERS_HOST=localhost
 DB_USERS_PORT=3306
@@ -226,7 +266,55 @@ DB_USERS_PASSWORD=123
 DB_USERS_NAME=usuarios_db
 ```
 
-### 🎞 videos `.env`
+#### 🎞 videos `.env`
 ```env
 MONGODB_URI=mongodb://localhost:27017/tallerMicro
 ```
+
+---
+
+## 🧼 Limpieza automática del Blacklist
+
+El microservicio `auth` incluye un servicio que elimina tokens expirados automáticamente cada hora de la tabla `blacklist`. Esto se implementa mediante `@Cron` de `@nestjs/schedule`, y se ejecuta con:
+
+```ts
+@Cron('0 * * * *')
+async limpiar() {
+  const now = new Date();
+  const result = await this.blacklistRepo.delete({ expiresAt: LessThan(now) });
+  if ((result.affected ?? 0) > 0) {
+    console.log(`[Blacklist] 🧹 Tokens expirados eliminados: ${result.affected}`);
+  }
+}
+```
+
+---
+
+## ❌ Microservicios no implementados
+
+Los siguientes microservicios están definidos pero **no han sido implementados**, por lo tanto:
+
+- `correo`: No implementado. **No es necesario levantarlo.**
+- `monitoreo`: No implementado. **No es necesario levantarlo.**
+
+---
+
+## 🔄 Prueba del Balanceador de Carga con NGINX
+
+Para verificar que el balanceador de carga NGINX está funcionando correctamente, puedes exponer el siguiente endpoint dentro del controlador principal (`AppController`) del `api-gateway`:
+
+```ts
+// ✅ NUEVO ENDPOINT para probar el balanceo
+@Get('ping')
+getPing() {
+  return {
+    puerto: process.env.PORT,
+  };
+}
+Una vez agregado, accede a http://localhost:3000/ping varias veces desde el navegador o Postman.
+
+🔁 Si el balanceo está funcionando, verás que el valor de "puerto" alterna entre "3005" y "3006", lo que indica que NGINX está distribuyendo las solicitudes entre ambas instancias del API Gateway.
+---
+
+¿Dudas o preguntas?  
+Contáctame o revisa los comentarios en el código.

@@ -1,62 +1,67 @@
+videos proto
+
+
 syntax = "proto3";
 
 package videos;
 
 service VideosService {
-rpc SeedVideos (Empty) returns (OperacionResponse);
-rpc CrearVideo (CrearVideoRequest) returns (VideoResponse);
-rpc ObtenerVideoPorId (VideoPorIdRequest) returns (VideoResponse);
-rpc ListarVideos (TokenRequest) returns (ListaVideosResponse);
-rpc EliminarVideo (VideoPorIdRequest) returns (OperacionResponse);
-rpc ActualizarVideo (ActualizarVideoRequest) returns (VideoResponse);
-rpc BuscarVideosPorTitulo (BuscarPorTituloRequest) returns (ListaVideosResponse);
+  rpc SeedVideos (Empty) returns (OperacionResponse);
+  rpc CrearVideo (CrearVideoRequest) returns (VideoResponse);
+  rpc ObtenerVideoPorId (VideoPorIdRequest) returns (VideoResponse);
+  rpc ListarVideos (TokenRequest) returns (ListaVideosResponse);
+  rpc EliminarVideo (VideoPorIdRequest) returns (OperacionResponse);
+  rpc ActualizarVideo (ActualizarVideoRequest) returns (VideoResponse);
+  rpc BuscarVideosPorTitulo (BuscarPorTituloRequest) returns (ListaVideosResponse);
 }
 
 message TokenRequest {
-string token = 1;
+  string token = 1;
 }
 
 message CrearVideoRequest {
-string title = 1;
-string description = 2;
-string genre = 3;
-string token = 4;
-}
-
-message ActualizarVideoRequest {
-  string id = 1; // agregar este campo
-  string title = 2;
-  string description = 3;
-  string genre = 4;
+  string title = 1;
+  string description = 2;
+  string genre = 3;
+  int32 price = 4;
   string token = 5;
 }
 
+message ActualizarVideoRequest {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  string genre = 4;
+  int32 price = 5;
+  string token = 6;
+}
 
 message VideoPorIdRequest {
-string id = 1;
-string token = 2;
+  string id = 1;
+  string token = 2;
 }
 
 message BuscarPorTituloRequest {
-string titulo = 1;
-string token = 2;
+  string titulo = 1;
+  string token = 2;
 }
 
 message VideoResponse {
-string id = 1;
-string title = 2;
-string description = 3;
-string genre = 4;
-string status = 5;
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  string genre = 4;
+  string status = 5;
+  int32 price = 6;
 }
 
 message ListaVideosResponse {
-repeated VideoResponse videos = 1;
+  repeated VideoResponse videos = 1;
 }
 
 message OperacionResponse {
-string mensaje = 1;
-bool exito = 2;
+  string mensaje = 1;
+  bool exito = 2;
 }
 
 message Empty {}

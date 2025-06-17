@@ -1,6 +1,16 @@
-import { Controller, Post, Get, Body, Param, Inject, UnauthorizedException, Req } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Body,
+  Param,
+  Inject,
+  UnauthorizedException,
+  Req,
+} from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
+import { Request } from 'express';
 
 interface InteraccionesService {
   seedInteracciones(data: {}): any;
@@ -19,21 +29,32 @@ export class InteraccionesController {
     this.interaccionesService = this.client.getService<InteraccionesService>('InteraccionesService');
   }
 
-  @Post('like')
-  async darLike(@Body() body: { videoId: string; token: string }) {
-    return await firstValueFrom(this.interaccionesService.darLike(body));
+  @Post(':videoId/like')
+  async darLike(@Param('videoId') videoId: string, @Req() req: Request) {
+    const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) throw new UnauthorizedException('Token no proporcionado');
+
+    return await firstValueFrom(this.interaccionesService.darLike({ videoId, token }));
   }
 
-  @Post('comentario')
-  async dejarComentario(@Body() body: { videoId: string; content: string; token: string }) {
-    return await firstValueFrom(this.interaccionesService.dejarComentario(body));
+  @Post(':videoId/comentario')
+  async dejarComentario(
+    @Param('videoId') videoId: string,
+    @Body() body: { content: string },
+    @Req() req: Request
+  ) {
+    const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) throw new UnauthorizedException('Token no proporcionado');
+
+    return await firstValueFrom(
+      this.interaccionesService.dejarComentario({ videoId, content: body.content, token })
+    );
   }
 
   @Post('seed')
   async seedInteracciones() {
     return await firstValueFrom(this.interaccionesService.seedInteracciones({}));
   }
-
 
   @Get(':videoId')
   async obtenerInteracciones(@Param('videoId') videoId: string, @Req() req: Request) {
