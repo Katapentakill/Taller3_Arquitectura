@@ -5,14 +5,153 @@ services:
     image: rabbitmq:3-management
     container_name: rabbitmq
     ports:
-      - "5672:5672"   # Puerto para conexión AMQP (microservicios)
-      - "15672:15672" # Interfaz web de administración
+      - "5672:5672"
+      - "15672:15672"
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - microservices_net
+
+  auth-db:
+    image: postgres:15
+    container_name: auth-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: authT2_db
+    volumes:
+      - auth-db-data:/var/lib/postgresql/data
+    networks:
+      - microservices_net
+
+  usuarios-db:
+    image: mariadb:10.7
+    container_name: usuarios-db
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: superseguro123
+    volumes:
+      - usuarios-db-data:/var/lib/mysql
+      - ./mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - microservices_net
+
+  auth:
+    build: ./microservicios/auth
+    container_name: auth
+    ports:
+      - "3002:3002"
+    networks:
+      - microservices_net
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      auth-db:
+        condition: service_started
+    volumes:
+      - ./proto:/proto
+    environment:
+      DB_AUTH_HOST: auth-db
+      DB_AUTH_PORT: 5432
+      DB_AUTH_USERNAME: postgres
+      DB_AUTH_PASSWORD: 123
+      DB_AUTH_NAME: authT2_db
+      JWT_SECRET: supersecreto123
+      JWT_EXPIRES_IN: 1h
+
+  usuarios:
+    build: ./microservicios/usuarios
+    container_name: usuarios
+    ports:
+      - "50051:50051"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      usuarios-db:
+        condition: service_started
+    volumes:
+      - ./proto:/proto
+    environment:
+      DB_USERS_HOST: usuarios-db
+      DB_USERS_PORT: 3306
+      DB_USERS_USERNAME: devuser
+      DB_USERS_PASSWORD: superseguro123
+      DB_USERS_NAME: usuariosT2_db
+    networks:
+      - microservices_net
+
+  apigateway1:
+    build: ./api-gateway
+    container_name: apigateway1
+    environment:
+      - PORT=3005
+    ports:
+      - "3005:3005"
+    volumes:
+      - ./proto:/proto
+    depends_on:
+      - auth
+      - usuarios
+    networks:
+      - microservices_net
+
+  apigateway2:
+    build: ./api-gateway
+    container_name: apigateway2
+    environment:
+      - PORT=3006
+    ports:
+      - "3006:3006"
+    volumes:
+      - ./proto:/proto
+    depends_on:
+      - auth
+      - usuarios
+    networks:
+      - microservices_net
+
+  apigateway3:
+    build: ./api-gateway
+    container_name: apigateway3
+    environment:
+      - PORT=3007
+    ports:
+      - "3007:3007"
+    volumes:
+      - ./proto:/proto
+    depends_on:
+      - auth
+      - usuarios
+    networks:
+      - microservices_net
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx-taller2
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+    depends_on:
+      - apigateway1
+      - apigateway2
+      - apigateway3
     networks:
       - microservices_net
 
 networks:
   microservices_net:
     driver: bridge
+
+volumes:
+  auth-db-data:
+  usuarios-db-data:

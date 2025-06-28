@@ -1,4 +1,3 @@
-videos controller microservicio
 
 import { Controller } from '@nestjs/common';
 import { EventPattern, GrpcMethod } from '@nestjs/microservices';

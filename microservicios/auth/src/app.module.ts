@@ -12,19 +12,22 @@ import { ScheduleModule } from '@nestjs/schedule';
     ConfigModule.forRoot({ isGlobal: true }),
 
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        type: 'postgres',
-        host: config.get('DB_AUTH_HOST'),
-        port: config.get<number>('DB_AUTH_PORT'),
-        username: config.get('DB_AUTH_USERNAME'),
-        password: config.get('DB_AUTH_PASSWORD'),
-        database: config.get('DB_AUTH_NAME'),
-        entities: [User, TokenBlacklist],
-        synchronize: true,
-      }),
+    imports: [ConfigModule],
+    inject: [ConfigService],
+    useFactory: (config: ConfigService) => ({
+      type: 'postgres',
+      host: config.get('DB_AUTH_HOST'),
+      port: config.get<number>('DB_AUTH_PORT'),
+      username: config.get('DB_AUTH_USERNAME'),
+      password: config.get('DB_AUTH_PASSWORD'),
+      database: config.get('DB_AUTH_NAME'),
+      entities: [User, TokenBlacklist],
+      synchronize: true,
+      retryAttempts: 10,
+      retryDelay: 3000, // en milisegundos
     }),
+  }),
+
 
     AuthModule,
   ],

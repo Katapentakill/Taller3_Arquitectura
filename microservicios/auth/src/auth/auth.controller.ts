@@ -7,6 +7,7 @@ import {
   Req,
   UnauthorizedException,
   HttpCode,
+  Get,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
@@ -64,5 +65,15 @@ export class AuthController {
     );
 
     return { message: 'Contraseña actualizada correctamente' };
+  }
+
+  @Get('auth/health')
+  @HttpCode(200)
+  getHealth() {
+    return {
+      status: 'ok',
+      message: '✅ Auth microservice is running',
+      timestamp: new Date().toISOString(),
+    };
   }
 }

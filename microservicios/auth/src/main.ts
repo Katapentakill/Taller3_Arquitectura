@@ -9,11 +9,12 @@ async function bootstrap() {
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
     options: {
-      urls: ['amqp://localhost:5672'],
+      urls: ['amqp://guest:guest@rabbitmq:5672'], // ✅ Nombre del contenedor
       queue: 'auth_queue',
       queueOptions: { durable: true },
     },
   });
+
 
   await app.startAllMicroservices();
   await app.listen(3002); // HTTP API activa

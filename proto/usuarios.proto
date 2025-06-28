@@ -9,6 +9,7 @@ service UsuariosService {
   rpc EliminarUsuario (EliminarUsuarioRequest) returns (Empty);
   rpc ListarUsuarios (ListarUsuariosRequest) returns (ListaUsuariosResponse);
   rpc SeedUsuarios (Empty) returns (MensajeResponse);
+  rpc HealthCheck (Empty) returns (MensajeResponse); // ✅ NUEVO
 }
 
 message CrearUsuarioRequest {

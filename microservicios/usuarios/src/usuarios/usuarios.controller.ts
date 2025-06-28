@@ -49,4 +49,8 @@ eliminarUsuario(data: { id: string; token: string }) {
 actualizarUsuario(data: { id: string; nombre: string; apellido: string; correo: string; token: string }) {
   return this.usuariosService.actualizarUsuario(data);
 }
+@GrpcMethod('UsuariosService', 'HealthCheck')
+healthCheck(_: any) {
+  return { mensaje: '✅ Microservicio de usuarios operativo' };
+}
 }

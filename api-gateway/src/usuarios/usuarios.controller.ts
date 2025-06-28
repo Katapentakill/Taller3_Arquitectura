@@ -19,6 +19,7 @@ interface UsuariosService {
   listarUsuarios(data: { token: string }): any;
   eliminarUsuario(data: { id: string; token: string }): any;
   actualizarUsuario(data: { id: string; token: string; nombre: string; apellido: string; correo: string }): any;
+  healthCheck(data: {}): any; // ✅ NUEVO
 }
 
 @Controller('usuarios')
@@ -66,6 +67,10 @@ export class UsuariosController {
     }
   }
 
+  @Get('estado/health')
+  async healthCheck() {
+    return await firstValueFrom(this.usuariosService.healthCheck({}));
+  }
 
   @Get(':id')
   async obtenerUsuarioPorId(@Param('id') id: string, @Req() req: Request) {

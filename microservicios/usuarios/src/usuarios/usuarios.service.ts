@@ -88,6 +88,27 @@ export class UsuariosService {
     const mitad = Math.floor(cantidad / 2);
     const usuarios: CrearUsuarioDto[] = [];
 
+    // ✅ Usuario administrador por defecto
+    usuarios.push({
+      nombre: 'Admin',
+      apellido: 'Debug',
+      correo: 'admin@test.com',
+      password: 'devpass',
+      confirmarPassword: 'devpass',
+      rol: 'Administrador',
+    });
+
+    // ✅ Usuario cliente por defecto
+    usuarios.push({
+      nombre: 'Cliente',
+      apellido: 'Debug',
+      correo: 'cliente@test.com',
+      password: 'devpass',
+      confirmarPassword: 'devpass',
+      rol: 'Cliente',
+    });
+
+    // 🔁 Generar usuarios aleatorios
     for (let i = 0; i < cantidad; i++) {
       const nombre = faker.person.firstName();
       const apellido = faker.person.lastName();
@@ -113,9 +134,10 @@ export class UsuariosService {
     }
 
     return {
-      mensaje: `✅ Se crearon ${usuarios.length} usuarios: ${mitad} administradores y ${usuarios.length - mitad} clientes.`,
+      mensaje: `✅ Se crearon ${usuarios.length} usuarios, incluyendo admin@test.com y cliente@test.com con clave devpass.`,
     };
   }
+
 
   async obtenerUsuarioPorId(id: string, token: string) {
     if (!token) throw new UnauthorizedException('Token requerido');
