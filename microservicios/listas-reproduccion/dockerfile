@@ -1,0 +1,23 @@
+# Imagen base
+FROM node:20
+
+# Crear y establecer directorio de trabajo
+WORKDIR /app
+
+# Copiar archivos
+COPY package*.json ./
+
+# Instalar dependencias
+RUN npm install
+
+# Copiar el resto del código
+COPY . .
+
+# Construir la app
+RUN npm run build
+
+# Exponer el puerto gRPC
+EXPOSE 50054
+
+# Comando para ejecutar el microservicio
+CMD ["node", "dist/main"]

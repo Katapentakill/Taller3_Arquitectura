@@ -35,4 +35,8 @@ export class ListasController {
   obtenerVideosLista(data: { listaId: string; token: string }) {
     return this.listasService.obtenerVideosLista(data.listaId, data.token);
   }
+  @GrpcMethod('ListasReproduccionService', 'HealthCheck')
+  healthCheck(_: any) {
+    return { mensaje: '✅ Microservicio de usuarios operativo' };
+  }
 }

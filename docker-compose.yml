@@ -43,6 +43,19 @@ services:
     networks:
       - microservices_net
 
+  listas-db:
+    image: postgres:15
+    container_name: listas-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: listas_db
+    volumes:
+      - listas-db-data:/var/lib/postgresql/data
+    networks:
+      - microservices_net
+
   auth:
     build: ./microservicios/auth
     container_name: auth
@@ -84,6 +97,27 @@ services:
       DB_USERS_USERNAME: devuser
       DB_USERS_PASSWORD: superseguro123
       DB_USERS_NAME: usuariosT2_db
+    networks:
+      - microservices_net
+
+  listas:
+    build: ./microservicios/listas-reproduccion
+    container_name: listas
+    ports:
+      - "50054:50054"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      listas-db:
+        condition: service_started
+    volumes:
+      - ./proto:/proto
+    environment:
+      DB_LISTAS_HOST: listas-db
+      DB_LISTAS_PORT: 5432
+      DB_LISTAS_USERNAME: postgres
+      DB_LISTAS_PASSWORD: 123
+      DB_LISTAS_NAME: listas_db
     networks:
       - microservices_net
 
@@ -155,3 +189,4 @@ networks:
 volumes:
   auth-db-data:
   usuarios-db-data:
+  listas-db-data:

@@ -6,6 +6,6 @@ export const listasClientOptions: ClientOptions = {
   options: {
     package: 'listas',
     protoPath: join(__dirname, '../../../proto/listaReproduccion.proto'),
-    url: 'localhost:50054', // Puerto de listas
+    url: 'listas:50054', // Correcto dentro de Docker
   },
 };

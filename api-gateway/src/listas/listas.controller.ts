@@ -30,6 +30,7 @@ interface ListasService {
   anadirVideo(data: { listaId: string; videoId: string; token: string }): any;
   eliminarVideo(data: { listaId: string; videoId: string; token: string }): any;
   obtenerVideosLista(data: { listaId: string; token: string }): any;
+  healthCheck(data: {}): any; // ✅ NUEVO
 }
 
 
@@ -51,6 +52,11 @@ export class ListasController {
     return await firstValueFrom(
       this.listasService.crearLista({ nombre: body.nombre, token }),
     );
+  }
+
+  @Get('estado/health')
+  async healthCheck() {
+    return await firstValueFrom(this.listasService.healthCheck({}));
   }
 
   @Get()

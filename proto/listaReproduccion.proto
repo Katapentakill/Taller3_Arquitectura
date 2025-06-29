@@ -10,6 +10,7 @@ service ListasReproduccionService {
   rpc ObtenerListas (TokenRequest) returns (ListasResponse);
   rpc ObtenerVideosLista (ListaPorIdRequest) returns (VideosListaResponse);
   rpc EliminarLista (ListaPorIdRequest) returns (google.protobuf.Empty);
+  rpc HealthCheck (Empty) returns (MensajeResponse); // ✅ NUEVO
 }
 
 message CrearListaRequest {
@@ -46,3 +47,9 @@ message ListasResponse {
 message VideosListaResponse {
   repeated string videoIds = 1;
 }
+
+message MensajeResponse {
+  string mensaje = 1;
+}
+
+message Empty {}
