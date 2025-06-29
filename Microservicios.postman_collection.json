@@ -17,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"correo\": \"usuarioa612638b@test.com\",\r\n  \"password\": \"123\"\r\n}",
+							"raw": "{\r\n  \"correo\": \"admin@test.com\",\r\n  \"password\": \"devpass\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -25,12 +25,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/auth/login",
-							"protocol": "http",
+							"raw": "https://localhost/auth/login",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"auth",
 								"login"
@@ -64,12 +63,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/auth/usuarios/:id",
-							"protocol": "http",
+							"raw": "https://localhost/auth/usuarios/:id",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"auth",
 								"usuarios",
@@ -93,7 +91,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0Nzk5NTM4ZC1hZTlhLTQzYTgtYjY2My0wNDRlZTgzZjhmZWEiLCJjb3JyZW8iOiJ1c3VhcmlvYTYxMjYzOGJAdGVzdC5jb20iLCJpYXQiOjE3NTAxMjg1MDgsImV4cCI6MTc1MDEzMjEwOH0.m7_y0okdYkqFuro3g09XY2heltt00So7DXaoCUcOhS8",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyNTRkYjQyYS1jZGJmLTRhNmEtYWYxNS00MzVlODcyMWVmYTkiLCJjb3JyZW8iOiJ1c3VhcmlvZjdhZTgxYWRAdGVzdC5jb20iLCJpYXQiOjE3NTA2MzU2OTQsImV4cCI6MTc1MDYzOTI5NH0.3gzP2TKWh3SM-oaq95PuRzdKp6EWEN1kMBNDX-h6jj8",
 									"type": "string"
 								}
 							]
@@ -110,17 +108,24 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/auth/logout",
-							"protocol": "http",
+							"raw": "https://localhost/auth/logout",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"auth",
 								"logout"
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "Health",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}
@@ -144,12 +149,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/usuarios",
-							"protocol": "http",
+							"raw": "https://localhost/usuarios",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"usuarios"
 							]
@@ -165,7 +169,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZjAzZTA2Yy02NjM2LTQwYjUtOTYzYS1jOGUxZTQ0MjA5ZjAiLCJjb3JyZW8iOiJ1c3VhcmlvMmI1MTc0ZDRAdGVzdC5jb20iLCJpYXQiOjE3NTAwNDA3NzAsImV4cCI6MTc1MDA0NDM3MH0.B-hUBRjxkPdVQx8vBSNqNLiKWcVUzZIG9_lEgDOaGbg",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZWMyYmI0Ny0wMDI1LTQ1ODctYWM4YS04YjRmMTBiY2VhNmIiLCJjb3JyZW8iOiJ1c3VhcmlvMzI3NzVlODVAdGVzdC5jb20iLCJpYXQiOjE3NTA4MDM4ODQsImV4cCI6MTc1MDgwNzQ4NH0.RMWo6rE7CP2ZOkhi3YCJQeX2CeFmHoPmHRMLtW0iEEI",
 									"type": "string"
 								}
 							]
@@ -173,12 +177,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/usuarios/:id",
-							"protocol": "http",
+							"raw": "https://localhost/usuarios/:id",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"usuarios",
 								":id"
@@ -186,7 +189,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "61088406-3ca9-47d1-840e-176341f102ea"
+									"value": "918351df-a5f0-4c62-b9bb-03057b347b8b"
 								}
 							]
 						}
@@ -201,7 +204,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZjAzZTA2Yy02NjM2LTQwYjUtOTYzYS1jOGUxZTQ0MjA5ZjAiLCJjb3JyZW8iOiJ1c3VhcmlvMmI1MTc0ZDRAdGVzdC5jb20iLCJpYXQiOjE3NTAwNDA3NzAsImV4cCI6MTc1MDA0NDM3MH0.B-hUBRjxkPdVQx8vBSNqNLiKWcVUzZIG9_lEgDOaGbg",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlMGZhMjYzZS1lZTcwLTQ2ZDAtOTBjNC00MWYwOTQ1NGNmZjQiLCJjb3JyZW8iOiJhZG1pbkB0ZXN0LmNvbSIsImlhdCI6MTc1MTE0NDY2NSwiZXhwIjoxNzUxMTQ4MjY1fQ.h4kxjfJjk6Ta0JD-5VqCe_wx4QWd4p8ffY_YJLuiHag",
 									"type": "string"
 								}
 							]
@@ -209,12 +212,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/usuarios/",
-							"protocol": "http",
+							"raw": "https://localhost/usuarios/",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"usuarios",
 								""
@@ -239,12 +241,11 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/usuarios/:id",
-							"protocol": "http",
+							"raw": "https://localhost/usuarios/:id",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"usuarios",
 								":id"
@@ -265,12 +266,11 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/usuarios/seed",
-							"protocol": "http",
+							"raw": "https://localhost/usuarios/seed",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"usuarios",
 								"seed"
@@ -287,7 +287,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZjAzZTA2Yy02NjM2LTQwYjUtOTYzYS1jOGUxZTQ0MjA5ZjAiLCJjb3JyZW8iOiJ1c3VhcmlvMmI1MTc0ZDRAdGVzdC5jb20iLCJpYXQiOjE3NTAwNDA3NzAsImV4cCI6MTc1MDA0NDM3MH0.B-hUBRjxkPdVQx8vBSNqNLiKWcVUzZIG9_lEgDOaGbg",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyNTRkYjQyYS1jZGJmLTRhNmEtYWYxNS00MzVlODcyMWVmYTkiLCJjb3JyZW8iOiJ1c3VhcmlvZjdhZTgxYWRAdGVzdC5jb20iLCJpYXQiOjE3NTA2MzU2OTQsImV4cCI6MTc1MDYzOTI5NH0.3gzP2TKWh3SM-oaq95PuRzdKp6EWEN1kMBNDX-h6jj8",
 									"type": "string"
 								}
 							]
@@ -296,7 +296,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nombre\": \"Carlos\",\r\n  \"apellido\": \"González\",\r\n  \"correo\": \"carlos.gonzalez@demo.cl\"\r\n}",
+							"raw": "{\r\n  \"nombre\": \"Carls\",\r\n  \"apellido\": \"Gonzálz\",\r\n  \"correo\": \"carlos.gonzalez@demo.cl\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -304,12 +304,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/usuarios/:id",
-							"protocol": "http",
+							"raw": "https://localhost/usuarios/:id",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"usuarios",
 								":id"
@@ -317,10 +316,18 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "61088406-3ca9-47d1-840e-176341f102ea"
+									"value": "df01cbaf-b0d2-40d5-9f86-00842f7e005c"
 								}
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "Health",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}
@@ -354,12 +361,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/listas-reproduccion/",
-							"protocol": "http",
+							"raw": "https://localhost/listas-reproduccion/",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"listas-reproduccion",
 								""
@@ -396,12 +402,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/listas-reproduccion/",
-							"protocol": "http",
+							"raw": "https://localhost/listas-reproduccion/",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"listas-reproduccion",
 								""
@@ -416,12 +421,11 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/listas-reproduccion/:id",
-							"protocol": "http",
+							"raw": "https://localhost/listas-reproduccion/:id",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"listas-reproduccion",
 								":id"
@@ -442,12 +446,11 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/listas-reproduccion/:id/videos",
-							"protocol": "http",
+							"raw": "https://localhost/listas-reproduccion/:id/videos",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"listas-reproduccion",
 								":id",
@@ -469,12 +472,11 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/listas-reproduccion/:id/videos",
-							"protocol": "http",
+							"raw": "https://localhost/listas-reproduccion/:id/videos",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"listas-reproduccion",
 								":id",
@@ -506,12 +508,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/listas-reproduccion/:id/videos",
-							"protocol": "http",
+							"raw": "https://localhost/listas-reproduccion/:id/videos",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"listas-reproduccion",
 								":id",
@@ -526,6 +527,14 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Health",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			]
 		},
@@ -538,12 +547,11 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/facturas/seed",
-							"protocol": "http",
+							"raw": "https://localhost/facturas/seed",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"facturas",
 								"seed"
@@ -577,12 +585,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/facturas",
-							"protocol": "http",
+							"raw": "https://localhost/facturas",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"facturas"
 							]
@@ -606,12 +613,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/facturas/:id",
-							"protocol": "http",
+							"raw": "https://localhost/facturas/:id",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"facturas",
 								":id"
@@ -651,12 +657,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/facturas/:id",
-							"protocol": "http",
+							"raw": "https://localhost/facturas/:id",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"facturas",
 								":id"
@@ -687,12 +692,11 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/facturas/:id",
-							"protocol": "http",
+							"raw": "https://localhost/facturas/:id",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"facturas",
 								":id"
@@ -723,12 +727,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/facturas?estado=",
-							"protocol": "http",
+							"raw": "https://localhost/facturas?estado=",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"facturas"
 							],
@@ -753,12 +756,11 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/videos/seed",
-							"protocol": "http",
+							"raw": "https://localhost/videos/seed",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"videos",
 								"seed"
@@ -792,12 +794,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/videos",
-							"protocol": "http",
+							"raw": "https://localhost/videos",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"videos"
 							]
@@ -813,7 +814,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZjAzZTA2Yy02NjM2LTQwYjUtOTYzYS1jOGUxZTQ0MjA5ZjAiLCJjb3JyZW8iOiJ1c3VhcmlvMmI1MTc0ZDRAdGVzdC5jb20iLCJpYXQiOjE3NTAxMTUxOTYsImV4cCI6MTc1MDExODc5Nn0.aufQwYfmbIFCAj6y2pNDT6ZZVapZTE1_Uj5xVuQl-ac",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0Nzk5NTM4ZC1hZTlhLTQzYTgtYjY2My0wNDRlZTgzZjhmZWEiLCJjb3JyZW8iOiJ1c3VhcmlvYTYxMjYzOGJAdGVzdC5jb20iLCJpYXQiOjE3NTA2MzQ5MzQsImV4cCI6MTc1MDYzODUzNH0.wSVU_KaFNIeomTU-j9mpNyvjpuF4YyLAsD98DSJ3R5M",
 									"type": "string"
 								}
 							]
@@ -821,12 +822,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/videos/:id",
-							"protocol": "http",
+							"raw": "https://localhost/videos/:id",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"videos",
 								":id"
@@ -849,7 +849,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZjAzZTA2Yy02NjM2LTQwYjUtOTYzYS1jOGUxZTQ0MjA5ZjAiLCJjb3JyZW8iOiJ1c3VhcmlvMmI1MTc0ZDRAdGVzdC5jb20iLCJpYXQiOjE3NTAxMTkzOTQsImV4cCI6MTc1MDEyMjk5NH0.0MYKphRbdUkf4V6og2V_-hSbNfxi78j_b_FlnzGKixg",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0Nzk5NTM4ZC1hZTlhLTQzYTgtYjY2My0wNDRlZTgzZjhmZWEiLCJjb3JyZW8iOiJ1c3VhcmlvYTYxMjYzOGJAdGVzdC5jb20iLCJpYXQiOjE3NTA2MzQ5MzQsImV4cCI6MTc1MDYzODUzNH0.wSVU_KaFNIeomTU-j9mpNyvjpuF4YyLAsD98DSJ3R5M",
 									"type": "string"
 								}
 							]
@@ -857,12 +857,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/videos",
-							"protocol": "http",
+							"raw": "https://localhost/videos",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"videos"
 							]
@@ -886,12 +885,11 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/videos/:id",
-							"protocol": "http",
+							"raw": "https://localhost/videos/:id",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"videos",
 								":id"
@@ -931,12 +929,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/videos/:id",
-							"protocol": "http",
+							"raw": "https://localhost/videos/:id",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"videos",
 								":id"
@@ -967,12 +964,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/videos/buscar/titulo?titulo=bellicus",
-							"protocol": "http",
+							"raw": "https://localhost/videos/buscar/titulo?titulo=bellicus",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"videos",
 								"buscar",
@@ -999,12 +995,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/monitoreo/acciones",
-							"protocol": "http",
+							"raw": "https://localhost/monitoreo/acciones",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"monitoreo",
 								"acciones"
@@ -1019,17 +1014,24 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/monitoreo/errores",
-							"protocol": "http",
+							"raw": "https://localhost/monitoreo/errores",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"monitoreo",
 								"errores"
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "Health",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}
@@ -1044,12 +1046,11 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/interacciones/seed",
-							"protocol": "http",
+							"raw": "https://localhost/interacciones/seed",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"interacciones",
 								"seed"
@@ -1074,12 +1075,11 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/interacciones/:videoId/like",
-							"protocol": "http",
+							"raw": "https://localhost/interacciones/:videoId/like",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"interacciones",
 								":videoId",
@@ -1120,12 +1120,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/interacciones/:videoId/comentario",
-							"protocol": "http",
+							"raw": "https://localhost/interacciones/:videoId/comentario",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"interacciones",
 								":videoId",
@@ -1157,12 +1156,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/interacciones/:videoId",
-							"protocol": "http",
+							"raw": "https://localhost/interacciones/:videoId",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
 							"path": [
 								"interacciones",
 								":videoId"
