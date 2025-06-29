@@ -1,4 +1,4 @@
-name: Subir imagen a Docker Hub
+name: Subir imágenes de microservicios a Docker Hub
 
 on:
   push:
@@ -19,9 +19,42 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Construir y subir la imagen Docker
+      # Microservicio: auth
+      - name: Construir y subir auth
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./microservicios/auth
           push: true
-          tags: recicla/miimagen:latest, recicla/miimagen:${{ github.sha }}
+          tags: recicla/auth:latest, recicla/auth:${{ github.sha }}
+
+      # Microservicio: usuarios
+      - name: Construir y subir usuarios
+        uses: docker/build-push-action@v5
+        with:
+          context: ./microservicios/usuarios
+          push: true
+          tags: recicla/usuarios:latest, recicla/usuarios:${{ github.sha }}
+
+      # Microservicio: listas-reproduccion
+      - name: Construir y subir listas-reproduccion
+        uses: docker/build-push-action@v5
+        with:
+          context: ./microservicios/listas-reproduccion
+          push: true
+          tags: recicla/listas:latest, recicla/listas:${{ github.sha }}
+
+      # Microservicio: monitoreo
+      - name: Construir y subir monitoreo
+        uses: docker/build-push-action@v5
+        with:
+          context: ./microservicios/monitoreo
+          push: true
+          tags: recicla/monitoreo:latest, recicla/monitoreo:${{ github.sha }}
+
+      # API Gateway
+      - name: Construir y subir api-gateway
+        uses: docker/build-push-action@v5
+        with:
+          context: ./api-gateway
+          push: true
+          tags: recicla/apigateway:latest, recicla/apigateway:${{ github.sha }}
