@@ -16,6 +16,11 @@ export class MonitoreoController {
     return this.service.listarErrores(data.token);
   }
 
+  @GrpcMethod('MonitoreoService', 'HealthCheck')
+  healthCheck(_: any) {
+    return { mensaje: '✅ Microservicio de monitoreo operativo' };
+  }
+
   @EventPattern('accion.registrada')
   handleRegistrarAccion(data: any) {
     return this.service.registrarAccion(data);

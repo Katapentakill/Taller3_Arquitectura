@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   rabbitmq:
     image: rabbitmq:3-management
@@ -10,6 +8,8 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
       interval: 10s
@@ -56,13 +56,22 @@ services:
     networks:
       - microservices_net
 
+  monitoreo-db:
+    image: mongo:8
+    container_name: monitoreo-db
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - monitoreo-db-data:/data/db
+    networks:
+      - microservices_net
+
   auth:
     build: ./microservicios/auth
     container_name: auth
     ports:
       - "3002:3002"
-    networks:
-      - microservices_net
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -78,6 +87,8 @@ services:
       DB_AUTH_NAME: authT2_db
       JWT_SECRET: supersecreto123
       JWT_EXPIRES_IN: 1h
+    networks:
+      - microservices_net
 
   usuarios:
     build: ./microservicios/usuarios
@@ -118,6 +129,24 @@ services:
       DB_LISTAS_USERNAME: postgres
       DB_LISTAS_PASSWORD: 123
       DB_LISTAS_NAME: listas_db
+    networks:
+      - microservices_net
+
+  monitoreo:
+    build: ./microservicios/monitoreo
+    container_name: monitoreo
+    ports:
+      - "50058:50058"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      monitoreo-db:
+        condition: service_started
+    volumes:
+      - ./proto:/proto
+    environment:
+      MONGO_URI: mongodb://monitoreo-db:27017/micro_monitoreo
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
     networks:
       - microservices_net
 
@@ -190,3 +219,5 @@ volumes:
   auth-db-data:
   usuarios-db-data:
   listas-db-data:
+  monitoreo-db-data:
+  rabbitmq-data:

@@ -5,6 +5,7 @@ package monitoreo;
 service MonitoreoService {
   rpc ListarAcciones(TokenRequest) returns (ListaAccionesResponse);
   rpc ListarErrores(TokenRequest) returns (ListaErroresResponse);
+  rpc HealthCheck (Empty) returns (MensajeResponse); // ✅ NUEVO
 }
 
 message TokenRequest {
@@ -36,3 +37,9 @@ message ListaAccionesResponse {
 message ListaErroresResponse {
   repeated ErrorEntry errores = 1;
 }
+
+message MensajeResponse {
+  string mensaje = 1;
+}
+
+message Empty {}

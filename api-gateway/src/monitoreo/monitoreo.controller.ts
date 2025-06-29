@@ -11,6 +11,7 @@ import { firstValueFrom } from 'rxjs';
 interface MonitoreoService {
   listarAcciones(data: { token: string }): any;
   listarErrores(data: { token: string }): any;
+  healthCheck(data: {}): any; // ✅ NUEVO
 }
 
 @Controller('monitoreo')
@@ -21,6 +22,11 @@ export class MonitoreoController {
 
   onModuleInit() {
     this.monitoreoService = this.monitoreoClient.getService<MonitoreoService>('MonitoreoService');
+  }
+
+  @Get('estado/health')
+    async healthCheck() {
+      return await firstValueFrom(this.monitoreoService.healthCheck({}));
   }
 
   @Get('acciones')

@@ -37,6 +37,6 @@ export class ListasController {
   }
   @GrpcMethod('ListasReproduccionService', 'HealthCheck')
   healthCheck(_: any) {
-    return { mensaje: '✅ Microservicio de usuarios operativo' };
+    return { mensaje: '✅ Microservicio de listas operativo' };
   }
 }

@@ -6,6 +6,6 @@ export const monitoreoClientOptions: ClientOptions = {
   options: {
     package: 'monitoreo',
     protoPath: join(__dirname, '../../../proto/monitoreo.proto'),
-    url: 'localhost:50058',
+    url: 'monitoreo:50058',
   },
 };
