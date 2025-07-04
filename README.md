@@ -166,3 +166,71 @@ docker logs nombre_del_contenedor
 ```
 
 O pregunta en el grupo de apoyo del Taller.
+
+---
+
+## 🔧 Configuración de variables de entorno (.env)
+
+Cada microservicio requiere un archivo `.env` para definir sus variables de entorno. A continuación se detallan las variables necesarias por servicio:
+
+### 🛡️ `auth`
+```env
+DB_AUTH_HOST=auth-db
+DB_AUTH_PORT=5432
+DB_AUTH_USERNAME=postgres
+DB_AUTH_PASSWORD=123
+DB_AUTH_NAME=authT2_db
+
+JWT_SECRET=supersecreto123
+JWT_EXPIRES_IN=1h
+```
+
+### 📬 `correo`
+```env
+MAIL_USER=tu_correo@gmail.com
+MAIL_PASS=tu_contraseña_de_aplicacion
+```
+
+### 💸 `facturas`
+```env
+DB_USERS_HOST=localhost
+DB_USERS_PORT=3306
+DB_USERS_USERNAME=root
+DB_USERS_PASSWORD=123
+DB_FACTURAS_NAME=facturacion
+```
+
+### 💬 `interacciones`
+```env
+MONGO_INTERACCIONES_URI=mongodb://localhost:27017/interacciones
+```
+
+### 🎵 `listas-reproduccion`
+```env
+DB_LISTAS_HOST=listas-db
+DB_LISTAS_PORT=5432
+DB_LISTAS_USERNAME=postgres
+DB_LISTAS_PASSWORD=123
+DB_LISTAS_NAME=listas_db
+```
+
+### 📊 `monitoreo`
+```env
+MONGO_URI=mongodb://monitoreo-db:27017/micro_monitoreo
+```
+
+### 👥 `usuarios`
+```env
+DB_USERS_HOST=usuarios-db
+DB_USERS_PORT=3306
+DB_USERS_USERNAME=devuser
+DB_USERS_PASSWORD=superseguro123
+DB_USERS_NAME=usuariosT2_db
+```
+
+### 🎞 `videos`
+```env
+MONGODB_URI=mongodb://localhost:27017/tallerMicro
+```
+
+> 📁 Recuerda: todos estos archivos `.env` deben estar ubicados en la raíz del respectivo microservicio para que Docker los tome correctamente.
