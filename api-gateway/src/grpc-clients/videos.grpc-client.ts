@@ -6,6 +6,6 @@ export const videosClientOptions: ClientOptions = {
   options: {
     package: 'videos',
     protoPath: join(__dirname, '../../../proto/videos.proto'),
-    url: 'localhost:50055',
+    url: 'videos:50059',
   },
 };

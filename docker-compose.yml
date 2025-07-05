@@ -67,6 +67,16 @@ services:
     networks:
       - microservices_net
 
+  videos-db:
+    image: mongo:8         
+    container_name: videos-db
+    restart: always
+    ports:
+      - "27018:27017"       
+    volumes:
+      - videos-db-data:/data/db
+    networks:
+      - microservices_net
   auth:
     build: ./microservicios/auth
     container_name: auth
@@ -150,6 +160,24 @@ services:
     networks:
       - microservices_net
 
+  videos:
+      build: ./microservicios/videos
+      container_name: videos
+      ports:
+        - "50059:50059"       
+      depends_on:
+        rabbitmq:
+          condition: service_healthy
+        videos-db:
+          condition: service_started
+      volumes:
+        - ./proto:/proto     
+      environment:
+        MONGODB_URI: mongodb://videos-db:27017/micro_videos
+        RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+      networks:
+        - microservices_net
+
   apigateway1:
     build: ./api-gateway
     container_name: apigateway1
@@ -162,6 +190,9 @@ services:
     depends_on:
       - auth
       - usuarios
+      - videos
+      - listas
+      - monitoreo
     networks:
       - microservices_net
 
@@ -177,6 +208,9 @@ services:
     depends_on:
       - auth
       - usuarios
+      - videos
+      - listas
+      - monitoreo
     networks:
       - microservices_net
 
@@ -192,6 +226,9 @@ services:
     depends_on:
       - auth
       - usuarios
+      - videos
+      - listas
+      - monitoreo
     networks:
       - microservices_net
 
@@ -220,4 +257,5 @@ volumes:
   usuarios-db-data:
   listas-db-data:
   monitoreo-db-data:
+  videos-db-data:
   rabbitmq-data:
