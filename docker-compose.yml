@@ -43,6 +43,18 @@ services:
     networks:
       - microservices_net
 
+  facturas-db:
+    image: mariadb:10.7
+    container_name: facturas-db
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: superseguro123
+    volumes:
+      - facturas-db-data:/var/lib/mysql
+      - ./mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - microservices_net
+
   listas-db:
     image: postgres:15
     container_name: listas-db
@@ -207,6 +219,28 @@ services:
     networks:
       - microservices_net
 
+  facturas:
+    build: ./microservicios/facturas
+    container_name: facturas
+    ports:
+      - "50056:50056"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      facturas-db:
+        condition: service_started
+    volumes:
+      - ./proto:/proto
+    environment:
+      DB_USERS_HOST: facturas-db
+      DB_USERS_PORT: 3306
+      DB_USERS_USERNAME: devuser
+      DB_USERS_PASSWORD: superseguro123
+      DB_FACTURAS_NAME: facturasT2_db
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+    networks:
+      - microservices_net
+
   apigateway1:
     build: ./api-gateway
     container_name: apigateway1
@@ -223,6 +257,7 @@ services:
       - listas
       - monitoreo
       - interacciones
+      - facturas
     networks:
       - microservices_net
 
@@ -242,6 +277,7 @@ services:
       - listas
       - monitoreo
       - interacciones
+      - facturas
     networks:
       - microservices_net
 
@@ -261,6 +297,7 @@ services:
       - listas
       - monitoreo
       - interacciones
+      - facturas
     networks:
       - microservices_net
 
@@ -287,6 +324,7 @@ networks:
 volumes:
   auth-db-data:
   usuarios-db-data:
+  facturas-db-data:
   listas-db-data:
   monitoreo-db-data:
   videos-db-data:

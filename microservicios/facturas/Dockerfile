@@ -1,0 +1,17 @@
+FROM node:20
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+# Copiamos el script y le damos permisos de ejecución
+COPY ./scripts/wait-for-it.sh /wait-for-it.sh
+RUN chmod +x /wait-for-it.sh
+
+EXPOSE 50056
+
+# Usamos el script para esperar a que la base de datos esté lista
+CMD ["sh", "-c", "/wait-for-it.sh facturas-db:3306 -- /wait-for-it.sh rabbitmq:5672 -- npm run start"]
