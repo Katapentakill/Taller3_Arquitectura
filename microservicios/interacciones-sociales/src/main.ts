@@ -9,7 +9,7 @@ async function bootstrap() {
     options: {
       package: 'interacciones',
       protoPath: join(__dirname, '../../../proto/interacciones.proto'),
-      url: '0.0.0.0:50059',
+      url: '0.0.0.0:50052',
     },
   });
 

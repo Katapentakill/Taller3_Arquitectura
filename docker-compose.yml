@@ -77,6 +77,17 @@ services:
       - videos-db-data:/data/db
     networks:
       - microservices_net
+
+  interacciones-db:
+    image: mongo:8
+    container_name: interacciones-db
+    restart: always
+    ports:
+      - "27019:27017"
+    volumes:
+      - interacciones-db-data:/data/db
+    networks:
+      - microservices_net
   auth:
     build: ./microservicios/auth
     container_name: auth
@@ -178,6 +189,24 @@ services:
       networks:
         - microservices_net
 
+  interacciones:
+    build: ./microservicios/interacciones-sociales
+    container_name: interacciones
+    ports:
+      - "50052:50052"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      interacciones-db:
+        condition: service_started
+    volumes:
+      - ./proto:/proto
+    environment:
+      MONGO_INTERACCIONES_URI: mongodb://interacciones-db:27017/micro_interacciones
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+    networks:
+      - microservices_net
+
   apigateway1:
     build: ./api-gateway
     container_name: apigateway1
@@ -193,6 +222,7 @@ services:
       - videos
       - listas
       - monitoreo
+      - interacciones
     networks:
       - microservices_net
 
@@ -211,6 +241,7 @@ services:
       - videos
       - listas
       - monitoreo
+      - interacciones
     networks:
       - microservices_net
 
@@ -229,6 +260,7 @@ services:
       - videos
       - listas
       - monitoreo
+      - interacciones
     networks:
       - microservices_net
 
@@ -258,4 +290,5 @@ volumes:
   listas-db-data:
   monitoreo-db-data:
   videos-db-data:
+  interacciones-db-data:
   rabbitmq-data:
