@@ -241,6 +241,21 @@ services:
     networks:
       - microservices_net
 
+  correo:
+    build: ./microservicios/correo
+    container_name: correo
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      MAIL_USER: tu_correo@gmail.com
+      MAIL_PASS: tu_contraseña_de_aplicacion
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+    volumes:
+      - ./proto:/proto
+    networks:
+      - microservices_net
+
   apigateway1:
     build: ./api-gateway
     container_name: apigateway1
