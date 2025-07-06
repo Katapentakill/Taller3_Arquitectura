@@ -233,4 +233,26 @@ DB_USERS_NAME=usuariosT2_db
 MONGODB_URI=mongodb://localhost:27017/tallerMicro
 ```
 
+## ⚠️ Importante: Archivos `wait-for-it.sh`
+
+Cada microservicio que tiene lógica de espera (`wait-for-it.sh` en la carpeta `scripts/`) **debe tener el archivo con terminación de línea `LF` y no `CRLF`**.
+
+Esto aplica para:
+
+- `microservicios/auth/scripts/wait-for-it.sh`
+- `microservicios/usuarios/scripts/wait-for-it.sh`
+- `microservicios/listas-reproduccion/scripts/wait-for-it.sh`
+- `microservicios/monitoreo/scripts/wait-for-it.sh`
+- `microservicios/videos/scripts/wait-for-it.sh`
+- `microservicios/interacciones-sociales/scripts/wait-for-it.sh`
+- `microservicios/facturas/scripts/wait-for-it.sh`
+- `microservicios/correo/scripts/wait-for-it.sh`
+- 
+### ¿Cómo cambiar a `LF` en Visual Studio Code?
+
+1. Abre el archivo en VSCode.
+2. En la esquina inferior derecha haz clic donde dice `CRLF`.
+3. Cambia a `LF`.
+4. Guarda el archivo.
+
 > 📁 Recuerda: todos estos archivos `.env` deben estar ubicados en la raíz del respectivo microservicio para que Docker los tome correctamente.
