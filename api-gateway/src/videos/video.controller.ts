@@ -10,6 +10,7 @@ import {
   Delete,
   Patch,
   Query,
+  HttpCode,
 } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
@@ -49,6 +50,7 @@ interface VideosService {
   actualizarVideo(data: { id: string } & ActualizarVideoRequest & { token: string }): any;
   buscarVideosPorTitulo(data: BuscarPorTituloRequest): any;
   seedVideos(data: {}): any;
+  healthCheck(data: {}): any;
 }
 
 @Controller('videos')
@@ -67,6 +69,24 @@ export class VideoController {
     return await firstValueFrom(this.videoService.seedVideos({}));
   }
 
+  @Get('health')
+  @HttpCode(200)
+  async healthCheck() {
+    console.log('[Gateway] → GET /videos/health');
+    return await firstValueFrom(this.videoService.healthCheck({}));
+  }
+
+  @Get('/buscar/titulo')
+  async buscarPorTitulo(@Query('titulo') titulo: string, @Req() req: Request) {
+    const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) throw new UnauthorizedException('Token no proporcionado');
+
+    console.log('[Gateway] → GET /videos/buscar/titulo');
+    const resultado = await firstValueFrom(
+      this.videoService.buscarVideosPorTitulo({ titulo, token }),
+    );
+    return resultado;
+  }
 
   @Post()
   async crearVideo(@Body() data: CrearVideoRequest, @Req() req: Request) {
@@ -76,18 +96,6 @@ export class VideoController {
     console.log('[Gateway] → POST /videos');
     const video = await firstValueFrom(
       this.videoService.crearVideo({ ...data, token }),
-    );
-    return video;
-  }
-
-  @Get(':id')
-  async obtenerVideoPorId(@Param('id') id: string, @Req() req: Request) {
-    const token = req.headers['authorization']?.split(' ')[1];
-    if (!token) throw new UnauthorizedException('Token no proporcionado');
-
-    console.log(`[Gateway] → GET /videos/${id}`);
-    const video = await firstValueFrom(
-      this.videoService.obtenerVideoPorId({ id, token }),
     );
     return video;
   }
@@ -102,6 +110,18 @@ export class VideoController {
       this.videoService.listarVideos({ token }),
     );
     return lista;
+  }
+
+  @Get(':id')
+  async obtenerVideoPorId(@Param('id') id: string, @Req() req: Request) {
+    const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) throw new UnauthorizedException('Token no proporcionado');
+
+    console.log(`[Gateway] → GET /videos/${id}`);
+    const video = await firstValueFrom(
+      this.videoService.obtenerVideoPorId({ id, token }),
+    );
+    return video;
   }
 
   @Delete(':id')
@@ -135,16 +155,5 @@ export class VideoController {
     );
     return actualizado;
   }
-
-  @Get('/buscar/titulo')
-  async buscarPorTitulo(@Query('titulo') titulo: string, @Req() req: Request) {
-    const token = req.headers['authorization']?.split(' ')[1];
-    if (!token) throw new UnauthorizedException('Token no proporcionado');
-
-    console.log('[Gateway] → GET /videos/buscar/titulo');
-    const resultado = await firstValueFrom(
-      this.videoService.buscarVideosPorTitulo({ titulo, token }),
-    );
-    return resultado;
-  }
+  
 }

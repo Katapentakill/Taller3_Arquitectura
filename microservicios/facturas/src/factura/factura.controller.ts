@@ -36,4 +36,13 @@ export class FacturaController {
   obtenerTodas(data: { token: string; estado?: string }) {
     return this.facturaService.obtenerTodas(data);
   }
+
+  @GrpcMethod('FacturasService', 'HealthCheck')
+  healthCheck(_: any) {
+    return {
+      status: 'healthy',
+      service: 'facturas-microservice',
+      timestamp: new Date().toISOString(),
+    };
+  }
 }

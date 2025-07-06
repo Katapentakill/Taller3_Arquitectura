@@ -9,6 +9,7 @@ service FacturasService {
   rpc ActualizarFactura (ActualizarFacturaRequest) returns (FacturaResponse);
   rpc EliminarFactura (FacturaPorIdRequest) returns (Mensaje);
   rpc ListarFacturas (ListarFacturasRequest) returns (FacturasListResponse);
+  rpc HealthCheck (Empty) returns (HealthResponse);
 }
 
 message CrearFacturaRequest {
@@ -59,6 +60,12 @@ message FacturasListResponse {
 
 message Mensaje {
   string message = 1;
+}
+
+message HealthResponse {
+  string status = 1;
+  string service = 2;
+  string timestamp = 3;
 }
 
 message Empty {}

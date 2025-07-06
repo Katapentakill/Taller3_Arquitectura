@@ -11,6 +11,7 @@ service VideosService {
   rpc EliminarVideo (VideoPorIdRequest) returns (OperacionResponse);
   rpc ActualizarVideo (ActualizarVideoRequest) returns (VideoResponse);
   rpc BuscarVideosPorTitulo (BuscarPorTituloRequest) returns (ListaVideosResponse);
+  rpc HealthCheck (Empty) returns (HealthResponse);
 }
 
 message TokenRequest {
@@ -60,6 +61,12 @@ message ListaVideosResponse {
 message OperacionResponse {
   string mensaje = 1;
   bool exito = 2;
+}
+
+message HealthResponse {
+  string status = 1;
+  string service = 2;
+  string timestamp = 3;
 }
 
 message Empty {}

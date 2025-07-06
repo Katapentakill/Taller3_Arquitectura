@@ -7,6 +7,7 @@ service InteraccionesService {
   rpc DejarComentario (ComentarioRequest) returns (MensajeResponse);
   rpc ObtenerInteracciones (VideoRequest) returns (InteraccionesResponse);
   rpc SeedInteracciones (Empty) returns (MensajeResponse);
+  rpc HealthCheck (Empty) returns (HealthResponse);
 }
 
 message LikeRequest {
@@ -39,6 +40,12 @@ message Comentario {
 message InteraccionesResponse {
   int32 likes = 1;
   repeated Comentario comentarios = 2;
+}
+
+message HealthResponse {
+  string status = 1;
+  string service = 2;
+  string timestamp = 3;
 }
 
 message Empty {}
