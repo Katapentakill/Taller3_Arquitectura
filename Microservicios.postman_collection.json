@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "9395c8b6-3517-4f77-a349-c5000785aaa4",
+		"_postman_id": "88ffb011-7f6b-44d4-b985-9369b46e989c",
 		"name": "Microservicios",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "33696577",
-		"_collection_link": "https://tapiateam.postman.co/workspace/TapiaTeam-Workspace~9f285a7f-e69d-4281-8344-6cdf5fd62c42/collection/33696577-9395c8b6-3517-4f77-a349-c5000785aaa4?action=share&source=collection_link&creator=33696577"
+		"_exporter_id": "27393212"
 	},
 	"item": [
 		{
@@ -125,7 +124,18 @@
 					"name": "Health",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "https://localhost/auth/health",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"health"
+							]
+						}
 					},
 					"response": []
 				}
@@ -327,7 +337,19 @@
 					"name": "Health",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "https://localhost/usuarios/estado/health",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"usuarios",
+								"estado",
+								"health"
+							]
+						}
 					},
 					"response": []
 				}
@@ -532,7 +554,18 @@
 					"name": "Health",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "https://localhost/listas-reproduccion/health",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"listas-reproduccion",
+								"health"
+							]
+						}
 					},
 					"response": []
 				}
@@ -740,6 +773,35 @@
 									"key": "estado",
 									"value": ""
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Health",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiNGY3MzY2Yy03YWIyLTQxODUtODNmYi0yNTM3ZDBhYmM1YmQiLCJjb3JyZW8iOiJhZG1pbkB0ZXN0LmNvbSIsImlhdCI6MTc1MTc2NTk1NCwiZXhwIjoxNzUxNzY5NTU0fQ.2C-LVFj0-XoMZRvoytsRHpL7a6DHC1YjKM78UuXZAiM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost/facturas/health",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"facturas",
+								"health"
 							]
 						}
 					},
@@ -983,6 +1045,35 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Health",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiNGY3MzY2Yy03YWIyLTQxODUtODNmYi0yNTM3ZDBhYmM1YmQiLCJjb3JyZW8iOiJhZG1pbkB0ZXN0LmNvbSIsImlhdCI6MTc1MTc2NTk1NCwiZXhwIjoxNzUxNzY5NTU0fQ.2C-LVFj0-XoMZRvoytsRHpL7a6DHC1YjKM78UuXZAiM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost/videos/health",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"videos",
+								"health"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1031,7 +1122,18 @@
 					"name": "Health",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "https://localhost/monitoreo/health",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"monitoreo",
+								"health"
+							]
+						}
 					},
 					"response": []
 				}
@@ -1135,6 +1237,35 @@
 									"key": "videoId",
 									"value": ""
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Health",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiNGY3MzY2Yy03YWIyLTQxODUtODNmYi0yNTM3ZDBhYmM1YmQiLCJjb3JyZW8iOiJhZG1pbkB0ZXN0LmNvbSIsImlhdCI6MTc1MTc2NTk1NCwiZXhwIjoxNzUxNzY5NTU0fQ.2C-LVFj0-XoMZRvoytsRHpL7a6DHC1YjKM78UuXZAiM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost/interacciones/health",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"interacciones",
+								"health"
 							]
 						}
 					},
