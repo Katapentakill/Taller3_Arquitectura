@@ -5,6 +5,17 @@ Este repositorio corresponde al **Taller 3 de Arquitectura de Sistemas**, donde 
 
 ---
 
+## 📑 Requisitos previos
+
+| Herramienta | Versión recomendada |
+|-------------|---------------------|
+| **Node.js** | ≥ 18 LTS  *(solo si vas a correr los servicios en modo dev)* |
+| **Nest CLI** | `npm i -g @nestjs/cli` |
+| **Docker Desktop** | Última estable |
+| **Docker Compose v2** | Incluido en Docker Desktop |
+
+---
+
 ## 🚀 ¿Cómo levantar el proyecto?
 
 > Todo el sistema se ejecuta automáticamente con Docker.
