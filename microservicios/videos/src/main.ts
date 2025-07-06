@@ -9,14 +9,14 @@ async function bootstrap() {
     options: {
       package: 'videos',
       protoPath: join(__dirname, '../../../proto/videos.proto'),
-      url: '0.0.0.0:50055',
+      url: '0.0.0.0:50059',
     },
   });
 
   const rmqApp = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
     transport: Transport.RMQ,
     options: {
-      urls: ['amqp://localhost:5672'],
+      urls: ['amqp://rabbitmq:5672'],
       queue: 'videos_queue',
       queueOptions: { durable: true },
     },

@@ -6,6 +6,6 @@ export const facturaClientOptions: ClientOptions = {
   options: {
     package: 'facturas',
     protoPath: join(__dirname, '../../../proto/facturas.proto'),
-    url: 'localhost:50056',
+    url: 'facturas:50056',
   },
 };

@@ -17,7 +17,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         name: 'RABBITMQ_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://localhost:5672'],
+          urls: ['amqp://rabbitmq:5672'],
           queue: 'usuarios_queue',
           queueOptions: { durable: true },
         },
@@ -26,7 +26,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         name: 'VIDEOS_RMQ',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://localhost:5672'],
+          urls: ['amqp://rabbitmq:5672'],
           queue: 'videos_queue',
           queueOptions: { durable: true },
         },
