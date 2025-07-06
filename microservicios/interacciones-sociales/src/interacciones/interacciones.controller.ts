@@ -26,4 +26,13 @@ export class InteraccionesController {
   obtenerInteracciones(data: { videoId: string; token: string }) {
     return this.interaccionesService.obtenerInteracciones(data.videoId, data.token);
   }
+
+  @GrpcMethod('InteraccionesService', 'HealthCheck')
+  healthCheck(_: any) {
+    return {
+      status: 'healthy',
+      service: 'interacciones-microservice',
+      timestamp: new Date().toISOString(),
+    };
+  }
 }

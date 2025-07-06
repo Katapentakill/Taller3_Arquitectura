@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package correo;
+
+service CorreoService {
+  rpc EnviarCorreo (EnviarCorreoRequest) returns (CorreoResponse);
+  rpc HealthCheck (Empty) returns (HealthResponse);
+}
+
+message EnviarCorreoRequest {
+  string destinatario = 1;
+  string asunto = 2;
+  string contenido = 3;
+  string tipo = 4; // "factura", "bienvenida", etc.
+}
+
+message CorreoResponse {
+  string mensaje = 1;
+  bool exito = 2;
+}
+
+message HealthResponse {
+  string status = 1;
+  string service = 2;
+  string timestamp = 3;
+}
+
+message Empty {}

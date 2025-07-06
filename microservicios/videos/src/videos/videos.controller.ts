@@ -1,5 +1,14 @@
 
-import { Controller } from '@nestjs/common';
+import {   Body,
+  Controller,
+  Post,
+  Patch,
+  Param,
+  Req,
+  UnauthorizedException,
+  HttpCode,
+  Get,
+} from '@nestjs/common';
 import { EventPattern, GrpcMethod } from '@nestjs/microservices';
 import { VideosService } from './videos.service';
 
@@ -50,6 +59,15 @@ export class VideosController {
   @GrpcMethod('VideosService', 'BuscarVideosPorTitulo')
   buscarVideosPorTitulo(data: { titulo: string; token: string }) {
     return this.videosService.buscarPorTitulo(data.titulo, data.token);
+  }
+
+  @GrpcMethod('VideosService', 'HealthCheck')
+  healthCheck(_: any) {
+    return {
+      status: 'healthy',
+      service: 'videos-microservice',
+      timestamp: new Date().toISOString(),
+    };
   }
 
 }

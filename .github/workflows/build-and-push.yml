@@ -1,60 +1,94 @@
-name: Subir imágenes de microservicios a Docker Hub
+name: Despliegue Continuo - Build & Push a Docker Hub
 
 on:
   push:
     branches:
-      - main  # Cambia esto si tu rama principal tiene otro nombre
+      - main        
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Clonar código
       - name: Clonar el repositorio
         uses: actions/checkout@v3
 
+      # 2. Login en Docker Hub
       - name: Iniciar sesión en Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Microservicio: auth
+      # 3. Microservicio: auth
       - name: Construir y subir auth
         uses: docker/build-push-action@v5
         with:
           context: ./microservicios/auth
           push: true
-          tags: recicla/auth:latest, recicla/auth:${{ github.sha }}
+          tags: recicla/auth:latest,recicla/auth:${{ github.sha }}
 
-      # Microservicio: usuarios
+      # 4. Microservicio: usuarios
       - name: Construir y subir usuarios
         uses: docker/build-push-action@v5
         with:
           context: ./microservicios/usuarios
           push: true
-          tags: recicla/usuarios:latest, recicla/usuarios:${{ github.sha }}
+          tags: recicla/usuarios:latest,recicla/usuarios:${{ github.sha }}
 
-      # Microservicio: listas-reproduccion
+      # 5. Microservicio: listas-reproduccion
       - name: Construir y subir listas-reproduccion
         uses: docker/build-push-action@v5
         with:
           context: ./microservicios/listas-reproduccion
           push: true
-          tags: recicla/listas:latest, recicla/listas:${{ github.sha }}
+          tags: recicla/listas:latest,recicla/listas:${{ github.sha }}
 
-      # Microservicio: monitoreo
+      # 6. Microservicio: monitoreo
       - name: Construir y subir monitoreo
         uses: docker/build-push-action@v5
         with:
           context: ./microservicios/monitoreo
           push: true
-          tags: recicla/monitoreo:latest, recicla/monitoreo:${{ github.sha }}
+          tags: recicla/monitoreo:latest,recicla/monitoreo:${{ github.sha }}
 
-      # API Gateway
+      # 7. Microservicio: videos
+      - name: Construir y subir videos
+        uses: docker/build-push-action@v5
+        with:
+          context: ./microservicios/videos
+          push: true
+          tags: recicla/videos:latest,recicla/videos:${{ github.sha }}
+
+      # 8. Microservicio: interacciones-sociales
+      - name: Construir y subir interacciones-sociales
+        uses: docker/build-push-action@v5
+        with:
+          context: ./microservicios/interacciones-sociales
+          push: true
+          tags: recicla/interacciones:latest,recicla/interacciones:${{ github.sha }}
+
+      # 9. Microservicio: facturas
+      - name: Construir y subir facturas
+        uses: docker/build-push-action@v5
+        with:
+          context: ./microservicios/facturas
+          push: true
+          tags: recicla/facturas:latest,recicla/facturas:${{ github.sha }}
+
+      # 10. Microservicio: correo
+      - name: Construir y subir correo
+        uses: docker/build-push-action@v5
+        with:
+          context: ./microservicios/correo
+          push: true
+          tags: recicla/correo:latest,recicla/correo:${{ github.sha }}
+
+      # 11. API Gateway (se construye una vez; las 3 instancias usan la misma imagen)
       - name: Construir y subir api-gateway
         uses: docker/build-push-action@v5
         with:
           context: ./api-gateway
           push: true
-          tags: recicla/apigateway:latest, recicla/apigateway:${{ github.sha }}
+          tags: recicla/apigateway:latest,recicla/apigateway:${{ github.sha }}
